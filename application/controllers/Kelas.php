@@ -15,7 +15,7 @@ class Kelas extends CI_CONTROLLER{
 
     public function index(){
         $data['title'] = 'List Kelas';
-        $data['program'] = ["Hifdzi 1", "Tarkibi 2"];
+        $data['program'] = $this->Main_model->get_all("program", "", "program", "ASC");
         $data['civitas'] = $this->Main_model->get_all("civitas", ["status" => "aktif"], "nama_civitas");
         // $kelas = $this->Main_model->get_all("kelas", "", "tgl_mulai", "ASC");
         // $data['kelas'] = [];
@@ -39,8 +39,8 @@ class Kelas extends CI_CONTROLLER{
             $row = array();
             $row[] = '<center>'.$no.'</center>';
             // if($kelas->status == "aktif") $row[] = $kelas->status;
-            if($kelas->status == "aktif") $row[] = '<a href="#" class="btn btn-sm btn-outline-success" data-id="'.$kelas->id_kelas.'|'.$kelas->nama_kelas.'|menonaktifkan" id="btnStatusKelas">aktif</a>';
-            else $row[] = '<a href="#" class="btn btn-sm btn-outline-secondary" data-id="'.$kelas->id_kelas.'|'.$kelas->nama_kelas.'|mengaktifkan" id="btnStatusKelas">nonaktif</a>';
+            if($kelas->status == "aktif") $row[] = '<a href="javascript:void(0)" class="btn btn-sm btn-outline-success" data-id="'.$kelas->id_kelas.'|'.$kelas->nama_kelas.'|menonaktifkan" id="btnStatusKelas">aktif</a>';
+            else $row[] = '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" data-id="'.$kelas->id_kelas.'|'.$kelas->nama_kelas.'|mengaktifkan" id="btnStatusKelas">nonaktif</a>';
             $row[] = date("d-m-Y", strtotime($kelas->tgl_mulai));
             $row[] = $kelas->nama_kelas;
             
@@ -51,6 +51,7 @@ class Kelas extends CI_CONTROLLER{
                 
             $row[] = $kelas->program;
             $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$kelas->id_kelas.'" class="btn btn-sm btn-outline-dark peserta">' . COUNT($this->Main_model->get_all("kelas_user", ["id_kelas" => $kelas->id_kelas])) . '</a></center>';
+            $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$kelas->id_kelas.'" class="btn btn-sm btn-outline-warning wl">' . COUNT($this->Main_model->get_all("kelas_user", ["id_kelas" => null, "program" => $kelas->program])) . '</a></center>';
             $row[] = '<a href="#modalEdit" data-toggle="modal" data-id="'.$kelas->id_kelas.'" class="btn btn-sm btn-info detail">detail</a>';
 
             $data[] = $row;
@@ -74,6 +75,13 @@ class Kelas extends CI_CONTROLLER{
             $peserta = $this->Main_model->get_all("kelas_user", ["id_kelas" => $id]);
             foreach ($peserta as $i => $peserta) {
                 $data['peserta'][$i] = $this->Main_model->get_one("user", ["id_user" => $peserta['id_user']]);
+                $data['peserta'][$i]['id'] = $peserta['id'];
+            }
+
+            $wl = $this->Main_model->get_all("kelas_user", ["id_kelas" => null, "program" => $data['program']]);
+            foreach ($wl as $i => $wl) {
+                $data['wl'][$i] = $this->Main_model->get_one("user", ["id_user" => $wl['id_user']]);
+                $data['wl'][$i]['id'] = $wl['id'];
             }
 
             echo json_encode($data);
@@ -155,6 +163,15 @@ class Kelas extends CI_CONTROLLER{
             // redirect('kelas');
             echo json_encode("1");
         }
+        
+        // pindah dari waiting list ke kelas 
+        public function add_kelas_wl(){
+            $id = $this->input->post("id");
+            $id_kelas = $this->input->post("id_kelas");
+
+            $this->Main_model->edit_data("kelas_user", ["id" => $id], ["id_kelas" => $id_kelas]);
+            echo $id_kelas;
+        }
     // add
 
     // delete
@@ -172,5 +189,24 @@ class Kelas extends CI_CONTROLLER{
             // redirect($_SERVER['HTTP_REFERER']);
 
             echo json_encode("1");
+        }
+        
+        public function keluar_kelas(){
+            $id = $this->input->post("id");
+
+            $data = $this->Main_model->get_one("kelas_user", ["id" => $id]);
+            $this->Main_model->edit_data("kelas_user", ["id" => $id], ["id_kelas" => null]);
+
+            echo $data['id_kelas'];
+        }
+
+        public function delete_wl(){
+            $id = $this->input->post("id");
+            $id_kelas = $this->input->post("id_kelas");
+
+            $data = $this->Main_model->get_one("kelas_user", ["id" => $id]);
+            $this->Main_model->delete_data("kelas_user", ["id" => $id]);
+
+            echo $id_kelas;
         }
 }

@@ -25,10 +25,11 @@
                                     <th style="width: 3%">No</th>
                                     <th style="width: 6%">Status</th>
                                     <th style="width: 10%">Tgl. Mulai</th>
-                                    <th>Nama Kelas</th>
+                                    <th style="width: 23%">Nama Kelas</th>
                                     <th>Pengajar</th>
                                     <th style="width: 10%"><center>Program</center></th>
                                     <th style="width: 5%">Peserta</th>
+                                    <th style="width: 5%">WL</th>
                                     <th style="width: 5%">Detail</th>
                                 </tr>
                             </thead>
@@ -56,14 +57,14 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
                             <li class="nav-item">
-                                <a href="#" class='nav-link active' id="btn-form-1"><i class="fas fa-book"></i></a>
+                                <a href="javascript:void(0)" class='nav-link active' id="btn-form-1"><i class="fas fa-book"></i></a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class='nav-link' id="btn-form-2"><i class="fas fa-users"></i></a>
+                                <a href="javascript:void(0)" class='nav-link' id="btn-form-2"><i class="fas fa-users"></i></a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a href="#" class='nav-link' id="btn-form-3"><i class="fas fa-database"></i></a>
-                            </li> -->
+                            <li class="nav-item">
+                                <a href="javascript:void(0)" class='nav-link' id="btn-form-3"><i class="fas fa-clock"></i></a>
+                            </li>
                         </ul>
                     </div>
                     <div class="card-body cus-font">
@@ -84,7 +85,7 @@
                                         <select name="program" id="program_edit" class="form-control form-control-sm">
                                             <option value="">Pilih Program</option>
                                             <?php foreach ($program as $data) :?>
-                                                <option value="<?= $data?>"><?= $data?></option>
+                                                <option value="<?= $data['program']?>"><?= $data['program']?></option>
                                             <?php endforeach;?>
                                         </select>
                                     </div>
@@ -123,27 +124,21 @@
                                     <ul class="list-group">
                                         <div id="list-peserta"></div>
                                     </ul>
-                                    <div class="d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-sm btn-danger mt-3" id="btnPeserta">Hapus Peserta (<span id="select1">0</span>)</button>
-                                    </div>
                                 </form>
                             </div>
                         </div>
 
                         <div class="card" id="form-3">
                             <div class="card-header text-primary">
-                                <strong>List Pertemuan</strong>
+                                <strong>Waiting list Peserta <span class="badge badge-info" id="jumWlPeserta">0</span></strong>
                             </div>
                             <div class="card-body">
-                                <div class="msgListPertemuan"></div>
-                                <form action="kelas/list_pertemuan" method="post" id="formListPertemuan">
+                                <div class="msgHapusPeserta"></div>
+                                <form action="kelas/delete_peserta" method="post" id="formWlPeserta">
                                     <input type="hidden" name="id_kelas">
                                     <ul class="list-group">
-                                        <div id="list-pertemuan"></div>
+                                        <div id="list-wl-peserta"></div>
                                     </ul>
-                                    <div class="d-flex justify-content-end">
-                                        <input type='submit' value='Simpan Data' class='btn btn-sm btn-primary mt-3' id='btnList'>
-                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -185,7 +180,7 @@
                         <select name="program" id="program_add" class="form-control form-control-sm" required>
                             <option value="">Pilih Program</option>
                             <?php foreach ($program as $data) :?>
-                                <option value="<?= $data?>"><?= $data?></option>
+                                <option value="<?= $data['program']?>"><?= $data['program']?></option>
                             <?php endforeach;?>
                         </select>
                     </div>
@@ -305,8 +300,6 @@
     })
     
     $("#dataTable").on("click", ".detail", function(){
-        a = [];
-        $("#select1").html(0);
         const id = $(this).data('id');
         detail(id)
         btn_1();
@@ -314,11 +307,16 @@
     })
     
     $("#dataTable").on("click", ".peserta", function(){
-        a = [];
-        $("#select1").html(0);
         const id = $(this).data('id');
         detail(id)
         btn_2();
+        delete_msg();
+    })
+
+    $("#dataTable").on("click", ".wl", function(){
+        const id = $(this).data('id');
+        detail(id)
+        btn_3();
         delete_msg();
     })
 
@@ -422,6 +420,78 @@
         return false;
     })
     
+    
+    // hapus peserta dari kelas
+        $("#list-peserta").on('click', '#keluar_kelas', function(){
+            let data = $(this).data("id");
+            data = data.split("|");
+            let id = data[0];
+            let nama = data[1];
+            let kelas = data[2];
+            if(confirm("Yakin akan mengeluarkan "+nama+" dari kelas "+kelas+"?")){
+                $.ajax({
+                    url: "<?= base_url()?>kelas/keluar_kelas",
+                    data: {id: id},
+                    method: "POST",
+                    success: function(data){
+                        detail(data);
+                        reload_table();
+                        var msg = `
+                                <div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil menghapus peserta dari kelas ini<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
+                        $('.msgHapusPeserta').html(msg);
+                    }
+                })
+            }
+        })
+
+    // masukkan waiting list ke kelas
+        $("#list-wl-peserta").on("click", "#add_kelas_wl", function(){
+            let data = $(this).data("id");
+            data = data.split("|");
+            let id = data[0];
+            let nama = data[1];
+            let kelas = data[2];
+            let id_kelas = data[3]
+            if(confirm("Yakin akan menambahkan "+nama+" ke kelas "+kelas+"?")){
+                $.ajax({
+                    url: "<?= base_url()?>kelas/add_kelas_wl",
+                    data: {id: id, id_kelas: id_kelas},
+                    method: "POST",
+                    success: function(data){
+                        detail(data);
+                        reload_table();
+                        var msg = `
+                                <div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil memasukkan peserta ke kelas<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
+                        $('.msgHapusPeserta').html(msg);
+                    }
+                })
+            }
+        })
+    
+    // hapus peserta dari waiting list 
+        $("#list-wl-peserta").on('click', '#delete_wl', function(){
+            let data = $(this).data("id");
+            data = data.split("|");
+            let id = data[0];
+            let nama = data[1];
+            let kelas = data[2];
+            let id_kelas = data[3]
+            if(confirm("Yakin akan menghapus "+nama+" dari waiting list "+kelas+"?")){
+                $.ajax({
+                    url: "<?= base_url()?>kelas/delete_wl",
+                    data: {id: id, id_kelas: id_kelas},
+                    method: "POST",
+                    success: function(data){
+                        detail(data);
+                        reload_table();
+                        var msg = `
+                                <div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil menghapus peserta dari waiting list<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
+                        $('.msgHapusPeserta').html(msg);
+                    }
+                })
+            }
+        })
+
     // detail
         $("#btn-form-1").click(function(){
             btn_1();
@@ -505,35 +575,49 @@
                     });
                     
                     let html = "";
-                    let check = "";
-
-                    for (let i = 1; i < 26; i++) {
-                        if(pert.includes("Pertemuan "+i)){
-                            check = "checked";
-                            b.push("Pertemuan "+i);
-                        } else {
-                            check = "";
-                        }
-
-                        html += `<li class="list-group-item"><input type="checkbox" name="pertemuan[]" value="Pertemuan `+i+`" id="per`+i+`" class="mr-3" `+check+`><label for="per`+i+`">Pertemuan `+i+`</label></li>`;
-                    }
-
-                    $("#list-pertemuan").html(html);
-
-                    html = "";
 
                     // let peserta = data.peserta;
                     if(data.peserta){
                         $("#jumPeserta").html(data.peserta.length)
                         data.peserta.forEach((element, i) => {
-                            html += `<li class="list-group-item"><input type="checkbox" name="peserta[]" value="`+element.id_user+`" id="peserta`+element.id_user+`" class="mr-3"><label for="peserta`+element.id_user+`">`+element.nama+`</label></li>`;
+                            btnDelete = `<a href="javascript:void(0)" id="keluar_kelas" class="mr-1" data-id="`+element.id+`|`+element.nama+`|`+data.nama_kelas+`"><i class="fa fa-minus-circle text-danger"></i></a>`
+                            
+                            html += `<li class="list-group-item d-flex justify-content-between">
+                                        <span>
+                                            `+btnDelete+`
+                                            `+element.nama+`
+                                        </span>
+                                    </li>`;
                         });
+
                         $("#list-peserta").html(html);
                         $("#btnPeserta").show();
                     } else {
                         $("#jumPeserta").html(0)
                         $("#list-peserta").html(`<div class="alert alert-warning"><i class="fa fa-exclamation-circle mr-1 text-warning"></i> List peserta kosong</div>`);
                         $("#btnPeserta").hide();
+                    }
+
+                    html = "";
+
+                    if(data.wl){
+                        $("#jumWlPeserta").html(data.wl.length)
+                        data.wl.forEach((element, i) => {
+                            html += `<li class="list-group-item d-flex justify-content-between">
+                                        <span>
+                                            <a href="javascript:void(0)" id="delete_wl" class="mr-1" data-id="`+element.id+`|`+element.nama+`|`+data.program+`|`+data.id_kelas+`"><i class="fa fa-minus-circle text-danger"></i></a>
+                                            `+element.nama+`
+                                        </span>
+                                        <span>
+                                            <a href="javascript:void(0)" id="add_kelas_wl" data-id="`+element.id+`|`+element.nama+`|`+data.nama_kelas+`|`+data.id_kelas+`"><i class="fa fa-plus-circle text-success"></i></a>
+                                        </span>
+                                    </li>`;
+                        });
+                        
+                        $("#list-wl-peserta").html(html);
+                    } else {
+                        $("#jumWlPeserta").html(0)
+                        $("#list-wl-peserta").html(`<div class="alert alert-warning"><i class="fa fa-exclamation-circle mr-1 text-warning"></i> List peserta kosong</div>`);
                     }
                 }
             })

@@ -19,7 +19,7 @@
                 </div>
             </div>
             <?php if($konfirm == 1):?>
-                <div class="card shadow mb-4" style="max-width: 650px">
+                <div class="card shadow mb-4" style="max-width: 680px">
             <?php else:?>
                 <div class="card shadow mb-4" style="max-width: 900px">
             <?php endif?>
@@ -28,18 +28,24 @@
                         <table id="dataTable" class="table table-sm cus-font">
                             <thead>
                                 <tr>
-                                    <th width="5%">No</th>
-                                    <th width="12%">ID</th>
-                                    <th width="">Nama</th>
                                     <?php if($konfirm == 1):?>
+                                        <th width="5%">No</th>
+                                        <th width="12%">ID</th>
+                                        <th width="">Nama</th>
                                         <th width="5%">Kelas</th>
-                                    <?php endif;?>
-                                    <th width=7%>Wl</th>
-                                    <th width=7%>Detail</th>
-                                    <?php if($konfirm == 0) :?>
-                                        <th width=7%>konfirmasi</th>
+                                        <th width=7%>Wl</th>
+                                        <th width=7%>Detail</th>
+                                        <th width="5%">Login</th>
+                                    <?php else :?>
+                                        <th width="5%">No</th>
+                                        <th width="12%">ID</th>
+                                        <th width="">Nama</th>
                                         <th width=11%>Follow Up</th>
                                         <th width=7%>Hapus</th>
+                                        <th width=7%><center>Wl</center></th>
+                                        <th width=7%>Detail</th>
+                                        <th width="5%">Login</th>
+                                        <th width=7%>konfirmasi</th>
                                     <?php endif;?>
                                 </tr>
                             </thead>
@@ -66,13 +72,13 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
                             <li class="nav-item">
-                                <a href="#" class='nav-link active' id="btn-form-1"><i class="fas fa-user"></i></a>
+                                <a href="javascript:void(0)" class='nav-link active' id="btn-form-1"><i class="fas fa-user"></i></a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class='nav-link' id="btn-form-2"><i class="fas fa-book"></i></a>
+                                <a href="javascript:void(0)" class='nav-link' id="btn-form-2"><i class="fas fa-book"></i></a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class='nav-link' id="btn-form-3">Tambah Kelas/WL</a>
+                                <a href="javascript:void(0)" class='nav-link' id="btn-form-3">Tambah Kelas/WL</a>
                             </li>
                         </ul>
                     </div>
@@ -131,11 +137,11 @@
                             <div class="card-body" id="modalEditKelas">
                                 <form id="formKelasPeserta">
                                     <input type="hidden" name="id_user">
-                                    <ul class="list-group mb-3">
+                                    <!-- <ul class="list-group mb-3">
                                         <li class="list-group-item list-group-item-primary"><strong>Data Login</strong></li>
                                         <div class="data-login"></div>
                                         <a href="" target="_blank" id="linkHref" class="btn btn-sm btn-success">Kirim Akun</a>
-                                    </ul>
+                                    </ul> -->
                                     <div class="msgWl"></div>
                                     <ul class="list-group">
                                         <li class="list-group-item list-group-item-warning"><strong>List Waiting List</strong></li>
@@ -175,7 +181,7 @@
                                     <select name="program_add" id="program_add" class="form-control form-control-sm" required>
                                         <option value="">Pilih Program</option>
                                         <?php foreach ($program as $data) :?>
-                                            <option value="<?= $data?>"><?= $data?></option>
+                                            <option value="<?= $data['program']?>"><?= $data['program']?></option>
                                         <?php endforeach;?>
                                     </select>
                                 </div>
@@ -265,9 +271,9 @@
         "columnDefs": [
         { 
             <?php if($konfirm == 1):?>
-                "targets": [0, 3, 4, 5], //first column / numbering column
+                "targets": [0, 3, 4, 5, 6], //first column / numbering column
             <?php else :?>
-                "targets": [0, 3, 4, 5, 6, 7], //first column / numbering column
+                "targets": [0, 3, 4, 5, 6, 7, 8], //first column / numbering column
             <?php endif ;?>
             "orderable": false, //set not orderable
         },
@@ -557,7 +563,7 @@
         }
         return false
     })
-    
+
     $("#dataTable").on("click", '#followUp2', function(){
         let data = $(this).data('id');
         data = data.split("|");
@@ -572,6 +578,29 @@
                 dataType: "JSON",
                 type: "POST",
                 data: {id: id, followup: followup},
+                success: function(data){
+                    reload_table();
+                    window.open(url, '_blank');
+                }
+            })
+        }
+        return false
+    })
+
+    
+    $("#dataTable").on("click", '#dataLogin', function(){
+        let data = $(this).data('id');
+        data = data.split("|");
+        let id = data[0];
+        let nama = data[1];
+        let url = data[2];
+
+        if(confirm("Kirim data login kepada "+nama+"?")){
+            $.ajax({
+                url: "<?= base_url()?>peserta/send_login",
+                dataType: "JSON",
+                type: "POST",
+                data: {id: id},
                 success: function(data){
                     reload_table();
                     window.open(url, '_blank');
@@ -641,7 +670,7 @@
                             html += `<li class="list-group-item d-flex justify-content-between">
                                 <span>`+user.kelas.nama_kelas+`</span>
                                 <span>
-                                    <a href="#" id="delete_wl" data-id="`+user.id+`"><i class="fa fa-minus-circle text-danger"></i></a>
+                                    <a href="javascript:void(0)" id="delete_wl" data-id="`+user.id+`"><i class="fa fa-minus-circle text-danger"></i></a>
                                 </span>
                             </li>`;
                         });
@@ -660,7 +689,7 @@
                             html += `<li class="list-group-item d-flex justify-content-between">
                                 <span>`+user.program+`</span>
                                 <span>
-                                    <a href="#" id="delete_wl" data-id="`+user.id+`"><i class="fa fa-minus-circle text-danger"></i></a>
+                                    <a href="javascript:void(0)" id="delete_wl" data-id="`+user.id+`"><i class="fa fa-minus-circle text-danger"></i></a>
                                 </span>
                             </li>`;
                         });
