@@ -74,8 +74,8 @@
                     if($peserta->username == "") $row[] = '<a href="javascript:void(0)" class="btn btn-sm btn-primary" data-id="'.$peserta->id_user.'|'.$peserta->nama.'" id="btnAddId">buat ID</a>';
                     else $row[] = $peserta->username;
                     $row[] = $peserta->nama;
-                    $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$peserta->id_user.'" class="btn btn-sm btn-outline-dark peserta">' . COUNT($this->Main_model->get_all("kelas_user", ["id_user" => $peserta->id_user, "id_kelas <>" => NULL])) . '</a></center>';
-                    $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$peserta->id_user.'" class="btn btn-sm btn-outline-warning peserta">' . COUNT($this->Main_model->get_all("kelas_user", ["id_user" => $peserta->id_user, "id_kelas =" => NULL])) . '</a></center>';
+                    $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$peserta->id_user.'" class="btn btn-sm btn-outline-dark peserta">' . COUNT($this->Main_model->get_all("kelas_user", ["id_user" => $peserta->id_user, "id_kelas <>" => NULL, "hapus" => 0])) . '</a></center>';
+                    $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$peserta->id_user.'" class="btn btn-sm btn-outline-warning peserta">' . COUNT($this->Main_model->get_all("kelas_user", ["id_user" => $peserta->id_user, "id_kelas =" => NULL, "hapus" => 0])) . '</a></center>';
                     $row[] = '<a href="#modalEdit" data-toggle="modal" data-id="'.$peserta->id_user.'" class="btn btn-sm btn-info detail">detail</a>';
                     
                     $nama = str_replace(" ", "%20", $peserta->nama);
@@ -113,7 +113,7 @@
                     else $row[] = "<center>-</center>";
 
                     // btn waiting list peserta 
-                    $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$peserta->id_user.'" class="btn btn-sm btn-outline-warning peserta">' . COUNT($this->Main_model->get_all("kelas_user", ["id_user" => $peserta->id_user, "id_kelas =" => NULL])) . '</a></center>';
+                    $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$peserta->id_user.'" class="btn btn-sm btn-outline-warning peserta">' . COUNT($this->Main_model->get_all("kelas_user", ["id_user" => $peserta->id_user, "id_kelas =" => NULL, "hapus" => 0])) . '</a></center>';
                     
                     // btn detail peserta 
                     $row[] = '<a href="#modalEdit" data-toggle="modal" data-id="'.$peserta->id_user.'" class="btn btn-sm btn-info detail">detail</a>';
@@ -130,8 +130,19 @@
                     // btn konfirmasi peserta 
                     if($peserta->username == "") $row[] = "<center>-</center>";
                     else {
-                        if($peserta->data_login == 1) $row[] = '<a href="javascript:void(0)" data-toggle="modal" data-id="'.$peserta->id_user.'|'.$peserta->nama.'" class="btn btn-sm btn-success konfirmasi">konfirmasi</a>';
-                        else $row[] = '<a href="javascript:void(0)" onclick="alert(`Sebelum mengkonfirmasi peserta, kirim data login terlebih dahulu`)" class="btn btn-sm btn-secondary">konfirmasi</a>';
+                        // if($peserta->data_login == 1) 
+                        if(COUNT($this->Main_model->get_all("kelas_user", ["id_user" => $peserta->id_user, "closing" => 0, "hapus" => 0])) == 0) $row[] = '<a href="javascript:void(0)" data-toggle="modal" data-id="'.$peserta->id_user.'|'.$peserta->nama.'" class="btn btn-sm btn-success konfirmasi">konfirmasi</a>';
+                        else $row[] = '<a href="javascript:void(0)" onclick="alert(`Sebelum mengkonfirmasi peserta, input data closing terlebih dahulu`)" class="btn btn-sm btn-secondary">konfirmasi</a>';
+                    }
+                    
+                    if($peserta->username == "") {
+                        $row[] = "<center>-</center>";
+                    } elseif($peserta->username != "" && COUNT($this->Main_model->get_all("kelas_user", ["id_user" => $peserta->id_user, "closing" => 0, "hapus" => 0])) == 0) { 
+                        $row[] = "<center>-</center>";
+                    } else {
+                        // if($peserta->data_login == 1) 
+                        $row[] = '<a href="#modalClosing" data-toggle="modal" data-id="'.$peserta->id_user.'" class="btn btn-sm btn-warning closing">closing</a>';
+                        // else $row[] = '<a href="javascript:void(0)" onclick="alert(`Sebelum mengkonfirmasi peserta, kirim data login terlebih dahulu`)" class="btn btn-sm btn-secondary">konfirmasi</a>';
                     }
                 }
     
@@ -148,8 +159,8 @@
             echo json_encode($output);
         }
 
-        public function wl_list($where = "Hifdzi 1"){
-            $list = $this->Wl_model->get_datatables($where);
+        public function wl_list(){
+            $list = $this->Wl_model->get_datatables();
             $data = array();
             $no = $_POST['start'];
             foreach ($list as $peserta) {
@@ -167,8 +178,8 @@
     
             $output = array(
                         "draw" => $_POST['draw'],
-                        "recordsTotal" => $this->Wl_model->count_all($where),
-                        "recordsFiltered" => $this->Wl_model->count_filtered($where),
+                        "recordsTotal" => $this->Wl_model->count_all(),
+                        "recordsFiltered" => $this->Wl_model->count_filtered(),
                         "data" => $data,
                     );
             //output to json format
@@ -184,15 +195,16 @@
                 $data['link'] = 'https://api.whatsapp.com/send?phone=62'.substr($data["no_hp"], 1).'&text=%F0%9F%91%8F%20*Selamat%20'.$nama.'%20kamu%20sudah%20terdaftar%20di%20Member%20Area%20Al%20Azhar%20Arabic%20Online.*%0A%0A*Silahkan%20kunjungi%20'.$link_member['value'].'*%0A%0A*Ini%20data%20Login%20kamu%20ya%3A*%0AUsername%20%3A%20'.$data['username'].'%0APassword%20%3A%20'.date('dmY', strtotime($data['tgl_lahir'])).'%0A%0AJika%20ada%20pertanyaan%20lebih%20lanjut%2C%20harap%20menghubungi%20saya%20langsung%20ya%20%F0%9F%98%8A%0A%0A*-%20Admin%20Al%20Azhar%20Arabic%20Online*';
 
                 // kelas peserta 
-                    $kelas = $this->Main_model->get_all("kelas_user", ["id_user" => $id, "id_kelas <>" => NULL], "id");
+                    $kelas = $this->Main_model->get_all("kelas_user", ["id_user" => $id, "id_kelas <>" => NULL, "hapus" => 0], "id");
                     foreach ($kelas as $i => $kelas) {
                         $data['user'][$i] = $kelas;
+                        $data['user'][$i]['link'] = MD5($kelas['id']);
                         $data['user'][$i]['kelas'] = $this->Main_model->get_one("kelas", ["id_kelas" => $kelas['id_kelas']]);
                     }
                 // kelas peserta 
                 
                 // waiting list peserta 
-                    $wl = $this->Main_model->get_all("kelas_user", ["id_user" => $id, "id_kelas =" => NULL], "id");
+                    $wl = $this->Main_model->get_all("kelas_user", ["id_user" => $id, "id_kelas =" => NULL, "hapus" => 0], "id");
                     foreach ($wl as $i => $wl) {
                         $data['wl'][$i] = $wl;
                     }
@@ -202,7 +214,7 @@
 
             public function get_kelas_peserta(){
                 $id = $this->input->post("id");
-                $kelas = $this->Main_model->get_all("kelas_user", ["id_user" => $id, "id_kelas <>" => NULL]);
+                $kelas = $this->Main_model->get_all("kelas_user", ["id_user" => $id, "id_kelas <>" => NULL, "hapus" => 0]);
                 foreach ($kelas as $i => $kelas) {
                     $data['user'][$i] = $kelas;
                     $data['user'][$i]['kelas'] = $this->Main_model->get_one("kelas", ["id_kelas" => $kelas['id_kelas']]);
@@ -238,7 +250,7 @@
             public function remove_kelas(){
                 $kelas = $this->input->post("id");
                 foreach ($kelas as $kelas) {
-                    $this->Main_model->delete_data("kelas_user", ["id" => $kelas]);
+                    $this->Main_model->edit_data("kelas_user", ["id" => $kelas], ["hapus" => 1]);
                 }
                 echo json_encode("1");
             }
@@ -246,7 +258,12 @@
             public function delete_wl(){
                 $id = $this->input->post("id");
                 $data = $this->Main_model->get_one("kelas_user", ["id" => $id]);
-                $this->Main_model->delete_data("kelas_user", ["id" => $id]);
+                $this->Main_model->edit_data("kelas_user", ["id" => $id], ["hapus" => 1]);
+                
+                // hapus closing 
+                    $this->Main_model->edit_data("closing_peserta", ["id" => $id], ["status" => 1]);
+                // hapus closing 
+
                 echo json_encode($data['id_user']);
             }
 
@@ -260,18 +277,48 @@
         // add
             public function add_kelas(){
                 $id_kelas = $this->input->post("id_kelas", TRUE);
+                $id_user = $this->input->post("id_user", TRUE);
+                $user = $this->Main_model->get_one("user", ["id_user" => $id_user]);
+
                 if($id_kelas == "") $id_kelas = NULL;
                 $data = [
                     "id_kelas" => $id_kelas,
-                    "id_user" => $this->input->post("id_user", TRUE),
-                    "program" => $this->input->post("program", TRUE)
+                    "id_user" => $id_user,
+                    "nama" => $user['nama'],
+                    "t4_lahir" => $user["t4_lahir"],
+                    "tgl_lahir" => $user["tgl_lahir"],
+                    "alamat" => $user["alamat"],
+                    "program" => $this->input->post("program", TRUE),
+                    "hapus" => 0
                 ];
 
                 $cek = $this->Main_model->get_one("kelas_user", $data);
                 if($cek){
                     echo json_encode("0");
                 } else {
-                    $this->Main_model->add_data("kelas_user", $data);
+                    $id = $this->Main_model->add_data("kelas_user", $data);
+                    $sumber = $this->input->post("sumber", TRUE);
+                    if($sumber == "Lainnya") {
+                        $sumber = $this->input->post("sumber_lainnya");
+                        $this->Main_model->add_data("sumber_closing", ["sumber" => $sumber]);
+                    }
+                    else $sumber = $sumber;
+
+                    $data = [
+                        "id_kelas_user" => $id,
+                        "id_user" => $id_user,
+                        "tgl_closing" => $this->input->post("tgl_closing", TRUE),
+                        "nama" => $user['nama'],
+                        "t4_lahir" => $user["t4_lahir"],
+                        "tgl_lahir" => $user["tgl_lahir"],
+                        "alamat" => $user["alamat"],
+                        "no_wa" => $user["no_hp"],
+                        "program" => $this->input->post("program", TRUE),
+                        "biaya" => $this->Main_model->rupiah_to_int($this->input->post("biaya", TRUE)),
+                        "sumber" => $sumber,
+                    ];
+
+                    $result = $this->Main_model->add_data("closing_peserta", $data);
                     echo json_encode("1");
                 }
             }

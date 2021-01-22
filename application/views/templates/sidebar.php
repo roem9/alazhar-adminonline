@@ -42,6 +42,13 @@
           <i class="fas fa-clock"></i>
           <span>WL Peserta</span></a>
       </li>
+
+      <li class="nav-item" id="sidebarClosing">
+        <a class="nav-link" href="<?= base_url()?>closing">
+          <i class="fas fa-funnel-dollar"></i>
+          <span>Closing Peserta</span></a>
+      </li>
+      
       
 
       <li class="nav-item" id="sidebarKelas">

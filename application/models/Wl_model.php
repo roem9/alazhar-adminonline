@@ -15,12 +15,11 @@ class Wl_model extends CI_Model {
         $this->load->database();
     }
  
-    private function _get_datatables_query($where)
+    private function _get_datatables_query()
     {
         $this->db->from("kelas_user as a");
         $this->db->join("user as b", "a.id_user = b.id_user");
-        $this->db->where(["id_kelas" => NULL]);
-        if($where) $this->db->where(["a.program" => "$where"]);
+        $this->db->where(["id_kelas" => NULL, "hapus" => 0]);
  
         $i = 0;
      
@@ -57,28 +56,27 @@ class Wl_model extends CI_Model {
         }
     }
  
-    function get_datatables($where)
+    function get_datatables()
     {
-        $this->_get_datatables_query($where);
+        $this->_get_datatables_query();
         if($_POST['length'] != -1)
         $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
  
-    function count_filtered($where)
+    function count_filtered()
     {
-        $this->_get_datatables_query($where);
+        $this->_get_datatables_query();
         $query = $this->db->get();
         return $query->num_rows();
     }
  
-    public function count_all($where)
+    public function count_all()
     {
         $this->db->from("kelas_user as a");
         $this->db->join("user as b", "a.id_user = b.id_user");
-        $this->db->where(["id_kelas" => NULL]);
-        if($where) $this->db->where(["a.program" => "$where"]);
+        $this->db->where(["id_kelas" => NULL, "hapus" => 0]);
         
         return $this->db->count_all_results();
     }

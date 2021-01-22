@@ -551,6 +551,7 @@
             $('.msg-add-data').html("");
             $('.msgListPertemuan').html("");
             $('.msgKelas').html("");
+            $('.msg-nilai').html("");
         }
 
         function detail(id){
@@ -580,15 +581,44 @@
                     if(data.peserta){
                         $("#jumPeserta").html(data.peserta.length)
                         data.peserta.forEach((element, i) => {
-                            btnDelete = `<a href="javascript:void(0)" id="keluar_kelas" class="mr-1" data-id="`+element.id+`|`+element.nama+`|`+data.nama_kelas+`"><i class="fa fa-minus-circle text-danger"></i></a>`
+                            if(data.status == "aktif") btnDelete = `<a href="javascript:void(0)" id="keluar_kelas" class="mr-1" data-id="`+element.id+`|`+element.nama+`|`+data.nama_kelas+`"><i class="fa fa-minus-circle text-danger"></i></a>`
+                            else btnDelete = "";
+
+                            if(element.nilai == "") nilai = `<small class="form-text text-danger">nilai belum diinputkan</small>`
+                            else nilai = ``
                             
+                            mumtaz = "";
+                            jj = "";
+                            jayyid = "";
+                            maqbul = "";
+
+                            if(element.nilai == "ممتاز"){ mumtaz = "selected" }else {mumtaz = ""}
+                            if(element.nilai == "جيد جدا"){ jj = "selected" }else {jj = ""}
+                            if(element.nilai == "جيد"){ jayyid = "selected" }else {jayyid = ""}
+                            if(element.nilai == "مقبول"){ maqbul = "selected" }else {maqbul = ""}
+
                             html += `<li class="list-group-item d-flex justify-content-between">
                                         <span>
                                             `+btnDelete+`
-                                            `+element.nama+`
+                                            `+element.nama+`<br>
+                                            <div class="form-inline mt-1">
+                                                <select name="nilai" id="nilai`+element.id+`" class="form-control form-control-sm mr-1">
+                                                    <option value="">Nilai</option>
+                                                    <option `+mumtaz+` value="ممتاز">ممتاز</option>
+                                                    <option `+jj+` value="جيد جدا">جيد جدا</option>
+                                                    <option `+jayyid+` value="جيد">جيد</option>
+                                                    <option `+maqbul+` value="مقبول">مقبول</option>
+                                                </select>
+                                                <a href="javascript:void(0)" class="btn btn-sm btn-primary" id="btnSaveNilai" data-id="`+element.id+`"><i class="fa fa-save"></i></a>
+                                            </div>
+                                            <span id="msg-`+element.id+`">`+nilai+`</span>
+                                        </span>
+                                        <span>
+                                            <a href="<?= base_url()?>kelas/syahadah/`+element.link+`" target="_blank" class="btn btn-warning btn-sm"><i class="fa fa-award"></i></a>
                                         </span>
                                     </li>`;
                         });
+                        
 
                         $("#list-peserta").html(html);
                         $("#btnPeserta").show();
@@ -603,13 +633,15 @@
                     if(data.wl){
                         $("#jumWlPeserta").html(data.wl.length)
                         data.wl.forEach((element, i) => {
+                            if(data.status == "aktif") btnAdd = `<a href="javascript:void(0)" id="add_kelas_wl" data-id="`+element.id+`|`+element.nama+`|`+data.nama_kelas+`|`+data.id_kelas+`"><i class="fa fa-plus-circle text-success"></i></a>`
+                            else btnAdd = "";
                             html += `<li class="list-group-item d-flex justify-content-between">
                                         <span>
                                             <a href="javascript:void(0)" id="delete_wl" class="mr-1" data-id="`+element.id+`|`+element.nama+`|`+data.program+`|`+data.id_kelas+`"><i class="fa fa-minus-circle text-danger"></i></a>
                                             `+element.nama+`
                                         </span>
                                         <span>
-                                            <a href="javascript:void(0)" id="add_kelas_wl" data-id="`+element.id+`|`+element.nama+`|`+data.nama_kelas+`|`+data.id_kelas+`"><i class="fa fa-plus-circle text-success"></i></a>
+                                            `+btnAdd+`
                                         </span>
                                     </li>`;
                         });
@@ -623,4 +655,21 @@
             })
         }
     // function 
+
+    $("#list-peserta").on("click", "#btnSaveNilai", function(){
+        let id = $(this).data("id");
+        let nilai = $("#nilai"+id).val();
+
+        $.ajax({
+            url: "<?= base_url()?>kelas/add_nilai_sertifikat",
+            method: "POST",
+            dataType: "JSON",
+            data: {id:id, nilai:nilai},
+            success: function(result){
+                delete_msg();
+                $("#msg-"+id).html(`<small class="form-text text-success msg-nilai">berhasil menginputkan nilai</small>`)
+            }
+        })
+    })
+    
 </script>

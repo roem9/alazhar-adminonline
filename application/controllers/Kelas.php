@@ -50,8 +50,8 @@ class Kelas extends CI_CONTROLLER{
                 $row[] = "<center>-</center>";
                 
             $row[] = $kelas->program;
-            $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$kelas->id_kelas.'" class="btn btn-sm btn-outline-dark peserta">' . COUNT($this->Main_model->get_all("kelas_user", ["id_kelas" => $kelas->id_kelas])) . '</a></center>';
-            $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$kelas->id_kelas.'" class="btn btn-sm btn-outline-warning wl">' . COUNT($this->Main_model->get_all("kelas_user", ["id_kelas" => null, "program" => $kelas->program])) . '</a></center>';
+            $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$kelas->id_kelas.'" class="btn btn-sm btn-outline-dark peserta">' . COUNT($this->Main_model->get_all("kelas_user", ["id_kelas" => $kelas->id_kelas, "hapus" => 0])) . '</a></center>';
+            $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$kelas->id_kelas.'" class="btn btn-sm btn-outline-warning wl">' . COUNT($this->Main_model->get_all("kelas_user", ["id_kelas" => null, "program" => $kelas->program, "hapus" => 0])) . '</a></center>';
             $row[] = '<a href="#modalEdit" data-toggle="modal" data-id="'.$kelas->id_kelas.'" class="btn btn-sm btn-info detail">detail</a>';
 
             $data[] = $row;
@@ -67,18 +67,73 @@ class Kelas extends CI_CONTROLLER{
         echo json_encode($output);
     }
 
+    public function syahadah($id_kelas){
+        
+        $kelas = $this->Main_model->get_one("kelas_user", ["MD5(id)" => $id_kelas, "hapus" => 0]);
+        $id = $kelas['id_user'];
+
+        $data['peserta'] = $this->Main_model->get_one("user", ["id_user" => $id]);
+        $data['kelas'] = $this->Main_model->get_one("kelas", ["id_kelas" => $kelas['id_kelas']]);
+        
+        $program = $this->Main_model->get_one("program", ["program" => $kelas['program']]);
+        $data['kelas']['program_arab'] = $program['program_arab'];
+        
+        $data['nilai'] = $kelas['nilai'];
+        
+        // var_dump($data);
+        // exit();
+
+        // echo json_encode($data);
+        $defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [210, 330], 'orientation' => 'L', 'margin_left' => '0', 'margin_right' => '0', 'margin_top' => '0', 'margin_bottom' => '0', 'fontDir' => array_merge($fontDirs, [__DIR__ . '/assets/font',]),
+        'fontdata' => $fontData + [
+            'arab' => [
+                // 'R' => 'tradbdo.ttf',
+                'R' => 'trado.ttf',
+                'useOTL' => 0xFF,
+                'useKashida' => 75,
+            ]
+        ], 
+        ]);
+        
+        $mpdf->text_input_as_HTML = true; //(default = false)
+        
+        // $mpdf->autoScriptToLang = true;
+        // $mpdf->baseScript = 1;
+        // $mpdf->autoVietnamese = true;
+        // $mpdf->autoArabic = true;
+        
+        // $kwitansi['data'] = $this->Main_model->get_one("ppu_transfer", ["id" => $id]);
+        
+        
+        // $kwitansi['id'] = substr($kwitansi['data']['id'],0, 3)."/PPU-Im/".date('m', strtotime($kwitansi['data']['tgl']))."/".date('Y', strtotime($kwitansi['data']['tgl']));
+
+        // var_dump($kwitansi);
+        $print = $this->load->view('pages/sertifikat/sertifikat', $data, TRUE);
+        $mpdf->WriteHTML($print);
+        // $mpdf->Output();
+        $mpdf->Output($data['kelas']['nama_kelas']."_".$data['peserta']['nama'].".pdf", 'I');
+    }
+
     // get
         public function get_detail_kelas(){
             $id = $this->input->post("id");
             $data = $this->Main_model->get_one("kelas", ["id_kelas" => $id]);
             $data['pertemuan'] = $this->Main_model->get_all("materi_kelas", ["id_kelas" => $id]);
-            $peserta = $this->Main_model->get_all("kelas_user", ["id_kelas" => $id]);
+            $peserta = $this->Main_model->get_all("kelas_user", ["id_kelas" => $id, "hapus" => 0]);
             foreach ($peserta as $i => $peserta) {
                 $data['peserta'][$i] = $this->Main_model->get_one("user", ["id_user" => $peserta['id_user']]);
                 $data['peserta'][$i]['id'] = $peserta['id'];
+                $data['peserta'][$i]['nilai'] = $peserta['nilai'];
+                $data['peserta'][$i]['link'] = MD5($peserta['id']);
             }
 
-            $wl = $this->Main_model->get_all("kelas_user", ["id_kelas" => null, "program" => $data['program']]);
+            $wl = $this->Main_model->get_all("kelas_user", ["id_kelas" => null, "program" => $data['program'], "hapus" => 0]);
             foreach ($wl as $i => $wl) {
                 $data['wl'][$i] = $this->Main_model->get_one("user", ["id_user" => $wl['id_user']]);
                 $data['wl'][$i]['id'] = $wl['id'];
@@ -92,7 +147,7 @@ class Kelas extends CI_CONTROLLER{
             $kelas = $this->Main_model->get_all("kelas", ["program" => $program, "status" => "aktif"]);
             foreach ($kelas as $i => $kelas) {
                 $data[$i] = $kelas;
-                $peserta = COUNT($this->Main_model->get_all("kelas_user", ["id_kelas" => $kelas['id_kelas']]));
+                $peserta = COUNT($this->Main_model->get_all("kelas_user", ["id_kelas" => $kelas['id_kelas'], "hapus" => 0]));
                 $data[$i]['peserta'] = $peserta;
             }
             echo json_encode($data);
@@ -172,25 +227,14 @@ class Kelas extends CI_CONTROLLER{
             $this->Main_model->edit_data("kelas_user", ["id" => $id], ["id_kelas" => $id_kelas]);
             echo $id_kelas;
         }
+
+        public function add_nilai_sertifikat(){
+            $data = $this->Kelas_model->add_nilai_sertifikat();
+            echo json_encode("1");
+        }
     // add
 
     // delete
-        public function delete_peserta(){
-            $peserta = $this->input->post("peserta");
-            foreach ($peserta as $peserta) {
-                $where = [
-                    "id_kelas" => $this->input->post("id_kelas"),
-                    "id_user" => $peserta,
-                ];
-
-                $this->Main_model->delete_data("kelas_user", $where);
-            };
-            // $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil menghapus peserta dari kelas<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-            // redirect($_SERVER['HTTP_REFERER']);
-
-            echo json_encode("1");
-        }
-        
         public function keluar_kelas(){
             $id = $this->input->post("id");
 
@@ -205,7 +249,11 @@ class Kelas extends CI_CONTROLLER{
             $id_kelas = $this->input->post("id_kelas");
 
             $data = $this->Main_model->get_one("kelas_user", ["id" => $id]);
-            $this->Main_model->delete_data("kelas_user", ["id" => $id]);
+            $this->Main_model->edit_data("kelas_user", ["id" => $id], ["hapus" => 1]);
+
+            // hapus closing 
+                $this->Main_model->edit_data("closing_peserta", ["id" => $id], ["status" => 1]);
+            // hapus closing 
 
             echo $id_kelas;
         }

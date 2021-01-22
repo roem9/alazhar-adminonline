@@ -78,5 +78,13 @@ class Kelas_model extends CI_Model {
         $this->db->join("civitas as b", "a.id_civitas = b.id_civitas");
         return $this->db->count_all_results();
     }
+
+    public function add_nilai_sertifikat(){
+        $id = $this->input->post("id");
+        $nilai = $this->input->post("nilai");
+
+        $this->Main_model->edit_data("kelas_user", ["id" => $id], ["nilai" => $nilai]);
+        return 1;
+    }
  
 }

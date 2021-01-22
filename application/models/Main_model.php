@@ -48,6 +48,17 @@ class Main_model extends CI_MODEL{
             $nominal = str_replace(".", "", $nominal);
             return $nominal;
         }
+
+        public function rupiah_to_int($data){
+            $data = str_replace("Rp. ", "", $data);
+            $data = str_replace(".", "", $data);
+            return $data;
+        }
+        
+        public function rupiah($angka){           
+            $hasil_rupiah = "Rp " . number_format($angka,0,',','.');
+            return $hasil_rupiah;
+        }
     // tes 
 
     // username
