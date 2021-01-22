@@ -13,10 +13,10 @@ class Kelas extends CI_CONTROLLER{
         }
     }
 
-    public function index(){
-        $data['title'] = 'List Kelas';
-        $data['program'] = $this->Main_model->get_all("program", "", "program", "ASC");
-        $data['civitas'] = $this->Main_model->get_all("civitas", ["status" => "aktif"], "nama_civitas");
+    // public function index(){
+    //     $data['title'] = 'List Kelas';
+    //     $data['program'] = $this->Main_model->get_all("program", "", "program", "ASC");
+    //     $data['civitas'] = $this->Main_model->get_all("civitas", ["status" => "aktif"], "nama_civitas");
         // $kelas = $this->Main_model->get_all("kelas", "", "tgl_mulai", "ASC");
         // $data['kelas'] = [];
         // foreach ($kelas as $i => $kelas) {
@@ -24,14 +24,37 @@ class Kelas extends CI_CONTROLLER{
         //     $data['kelas'][$i]['peserta'] = COUNT($this->Main_model->get_all("kelas_user", ["id_kelas" => $kelas['id_kelas']]));
         // }
 
+    //     $this->load->view('templates/header', $data);
+    //     $this->load->view('templates/sidebar');
+    //     $this->load->view('kelas/kelas', $data);
+    //     $this->load->view('templates/footer');
+    // }
+    public function aktif(){
+        $data['title'] = 'List Kelas Aktif';
+        $data['program'] = $this->Main_model->get_all("program", "", "program", "asc");
+        $data['civitas'] = $this->Main_model->get_all("civitas", ["status" => "aktif"], "nama_civitas");
+        $data['status'] = "aktif";
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar');
+        $this->load->view('kelas/kelas', $data);
+        $this->load->view('templates/footer');
+    }
+    
+    public function nonaktif(){
+        $data['title'] = 'List Kelas Nonaktif';
+        $data['program'] = $this->Main_model->get_all("program", "", "program", "asc");
+        $data['civitas'] = $this->Main_model->get_all("civitas", ["status" => "aktif"], "nama_civitas");
+        $data['status'] = "nonaktif";
+
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('kelas/kelas', $data);
         $this->load->view('templates/footer');
     }
 
-    public function ajax_list(){
-        $list = $this->Kelas_model->get_datatables();
+    public function ajax_list($status){
+        $list = $this->Kelas_model->get_datatables("a.status = '$status'");
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $kelas) {
@@ -59,8 +82,8 @@ class Kelas extends CI_CONTROLLER{
 
         $output = array(
                     "draw" => $_POST['draw'],
-                    "recordsTotal" => $this->Kelas_model->count_all(),
-                    "recordsFiltered" => $this->Kelas_model->count_filtered(),
+                    "recordsTotal" => $this->Kelas_model->count_all("a.status = '$status'"),
+                    "recordsFiltered" => $this->Kelas_model->count_filtered("a.status = '$status'"),
                     "data" => $data,
                 );
         //output to json format
@@ -84,11 +107,11 @@ class Kelas extends CI_CONTROLLER{
         // exit();
 
         // echo json_encode($data);
-        $defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
-        $fontDirs = $defaultConfig['fontDir'];
+        // $defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
+        // $fontDirs = $defaultConfig['fontDir'];
 
-        $defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
-        $fontData = $defaultFontConfig['fontdata'];
+        // $defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
+        // $fontData = $defaultFontConfig['fontdata'];
 
         $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [210, 330], 'orientation' => 'L', 'margin_left' => '0', 'margin_right' => '0', 'margin_top' => '0', 'margin_bottom' => '0', 'fontDir' => array_merge($fontDirs, [__DIR__ . '/assets/font',]),
         'fontdata' => $fontData + [

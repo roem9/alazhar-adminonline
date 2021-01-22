@@ -14,11 +14,12 @@ class Kelas_model extends CI_Model {
         $this->load->database();
     }
  
-    private function _get_datatables_query()
+    private function _get_datatables_query($where)
     {
         $this->db->select("a.id_kelas, a.nama_kelas, a.program, a.status, a.tgl_mulai, a.tgl_input, b.nama_civitas");
         $this->db->from("kelas as a");
         $this->db->join("civitas as b", "a.id_civitas = b.id_civitas", "left");
+        if($where) $this->db->where($where);
  
         $i = 0;
      
@@ -55,27 +56,29 @@ class Kelas_model extends CI_Model {
         }
     }
  
-    function get_datatables()
+    function get_datatables($where)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($where);
         if($_POST['length'] != -1)
         $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
  
-    function count_filtered()
+    function count_filtered($where)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($where);
         $query = $this->db->get();
         return $query->num_rows();
     }
  
-    public function count_all()
+    public function count_all($where)
     {
         $this->db->select("a.id_kelas, a.nama_kelas, a.program, a.status, a.tgl_mulai, a.tgl_input, b.nama_civitas");
         $this->db->from("kelas as a");
         $this->db->join("civitas as b", "a.id_civitas = b.id_civitas");
+        if($where) $this->db->where($where);
+        
         return $this->db->count_all_results();
     }
 

@@ -542,6 +542,9 @@
                     $('.msgPeserta').html(msg);
                     reload_table();
                     $("#modalClosing").modal("hide")
+                    $("#formAddClosing").trigger("reset");
+                    $("#sumber_lainnya_add").prop("disabled", true);
+                    $("#sumber_lainnya_add").prop("required", false);
                 }, error: function(xhr, status, error) {
                     alert(xhr.responseText);
                 }

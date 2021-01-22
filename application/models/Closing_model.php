@@ -185,7 +185,7 @@ class Closing_model extends CI_Model {
         
         // delete kelas user 
             $closing = $this->Main_model->get_one("closing_peserta", ["id" => $id]);
-            $this->Main_model->edit_data("kelas_user", ["id" => $closing['id']], ["hapus" => 1]);
+            $this->Main_model->edit_data("kelas_user", ["id" => $closing['id_kelas_user']], ["hapus" => 1]);
         // delete kelas user 
 
         return $data;

@@ -261,7 +261,7 @@
                 $this->Main_model->edit_data("kelas_user", ["id" => $id], ["hapus" => 1]);
                 
                 // hapus closing 
-                    $this->Main_model->edit_data("closing_peserta", ["id" => $id], ["status" => 1]);
+                    $this->Main_model->edit_data("closing_peserta", ["id_kelas_user" => $id], ["status" => 1]);
                 // hapus closing 
 
                 echo json_encode($data['id_user']);
