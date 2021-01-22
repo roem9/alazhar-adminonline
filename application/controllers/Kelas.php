@@ -107,11 +107,11 @@ class Kelas extends CI_CONTROLLER{
         // exit();
 
         // echo json_encode($data);
-        // $defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
-        // $fontDirs = $defaultConfig['fontDir'];
+        $defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
 
-        // $defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
-        // $fontData = $defaultFontConfig['fontdata'];
+        $defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
 
         $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [210, 330], 'orientation' => 'L', 'margin_left' => '0', 'margin_right' => '0', 'margin_top' => '0', 'margin_bottom' => '0', 'fontDir' => array_merge($fontDirs, [__DIR__ . '/assets/font',]),
         'fontdata' => $fontData + [
