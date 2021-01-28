@@ -70,28 +70,29 @@
 
         .nama{
 			position: absolute;
-			left: 630px;
-			top: 353px;
+			left: 640px;
+			top: 362px;
             font-size: 15px;
 		}
         .ttl{
 			position: absolute;
-			left: 630px;
-			top: 392px;
+			left: 640px;
+			top: 403px;
             font-size: 15px;
 		}
         .alamat{
 			position: absolute;
-			left: 630px;
-			top: 436px;
+			left: 640px;
+			top: 448px;
             font-size: 15px;
 		}
 
         .p1{
+            /* background-color: red; */
+            width: 500px;
 			position: absolute;
-			/* left: 565px; */
-            right: 230px;
-			top: 510px;
+            right: 185px;
+			top: 532px;
             font-size: 25px;
             font-family: 'arab';
             direction: 'rtl';
@@ -99,10 +100,11 @@
         }
         
         .p2{
+            /* background-color: red; */
+            width: 500px;
 			position: absolute;
-			/* left: 570px; */
-            right: 219px;
-			top: 560px;
+            right: 185px;
+			top: 580px;
             font-size: 25px;
             font-family: 'arab';
             direction: 'rtl';
@@ -110,41 +112,62 @@
         }
         
         .p3{
+            /* background-color: red; */
+            width: 500px;
 			position: absolute;
-			right: 430;
-			top: 610px;
+			right: 185px;
+			top: 628px;
             font-size: 25px;
             font-family: 'arab';
             direction: 'rtl';
             word-spacing: 3px;
         }
-        #gambar {
+        /* #gambar {
+            width: 50%;
+            height: 100%;
+        } */
+
+        .nilai{
+			position: absolute;
+			right: 370;
+			top: 670px;
+            font-family: arial;
+            /* direction: 'rtl'; */
+        }
+        
+        body {
             width: 100%;
             height: 100%;
         }
 
-        .nilai{
-			position: absolute;
-			right: 350;
-			top: 660px;
-            font-family: 'dejavusanscondensed';
-            direction: 'rtl';
+        .bg-sertifikat {
+            
+           background-image: url('<?= base_url()?>assets/img/sertifikat.jpg');
+           
+           /* Full height */
+           height: 100%;
+
+           /* Center and scale the image nicely */
+           background-position: center;
+           background-repeat: no-repeat;
+           background-size: cover;
         }
     </style>
 </head>
     <body>
-        <img id="gambar" src="<?= base_url()?>assets/img/sertifikat.jpg" alt="" srcset="">
+        <div class="bg-sertifikat">
+        </div>
         <p class="nama"><b><?= $peserta['nama']?></b></p>
         <p class="ttl"><b><?= $peserta['t4_lahir']?>, <?= tgl_indo(date("d-m-Y", strtotime($peserta['tgl_lahir'])))?></b></p>
         <p class="alamat"><b><?= $peserta['alamat']?></b></p>
 
-        <div class="p1">قَدْ دَرَسَ /دَرَسَتْ اللغة العربيّة فِي الْفَصْل "<?= $kelas['program_arab']?>" مِنَ التَّارِيْخ <?= angka_arab(date("j", strtotime($kelas["tgl_mulai"]))) ?> مِنْ <span style="font-size: 1px">ه</span></div>
-        <div class="p2"><?= bulan_arab(date("m", strtotime($kelas["tgl_mulai"]))) ?> إِلَى <?= tgl_arab(date("j-m", strtotime($kelas["tgl_selesai"])))?> <?= angka_arab(date("Y", strtotime($kelas["tgl_selesai"])))?>، وَ قَدْ نَجَحَ /تْ فِي الإمتِحَانِ النِّهَائِ <span style="font-size:1px">ن</span></div>
+        <div class="p1"><p style="text-align: center; margin: 0px">قَدْ دَرَسَ /دَرَسَتْ اللغة العربيّة فِي الْفَصْل "<?= $kelas['program_arab']?>" مِنَ التَّارِيْخ <?= angka_arab(date("j", strtotime($kelas["tgl_mulai"]))) ?> مِنْ </p><span style="font-size: 1px">ه</span></div>
+        <div class="p2"><p style="text-align: center; margin: 0px"><?= bulan_arab(date("m", strtotime($kelas["tgl_mulai"]))) ?> إِلَى <?= tgl_arab(date("j-m", strtotime($kelas["tgl_selesai"])))?> <?= angka_arab(date("Y", strtotime($kelas["tgl_selesai"])))?>، وَ قَدْ نَجَحَ /تْ فِي الإمتِحَانِ النِّهَائِ </p><span style="font-size:1px">ن</span></div>
         <div class="p3">
-            بِتَقْدِيْرِيْ<span style="font-size: 1px">ه</span>
+            <p style="text-align: center; margin: 0px">بِتَقْدِيْرِيْ</p><span style="font-size: 1px">ه</span>
         </div>
         <div class="nilai">
-            <span style="font-size: 35px"><strong><?= $nilai?></strong></span><span style="font-size: 1px">ه</span>
+            <span style="font-size: 40px"><strong><?= $nilai?></strong></span><span style="font-size: 1px">ه</span>
         </div>
 
     </body>

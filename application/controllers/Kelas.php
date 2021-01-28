@@ -103,21 +103,23 @@ class Kelas extends CI_CONTROLLER{
         
         $data['nilai'] = $kelas['nilai'];
         
-        // var_dump($data);
-        // exit();
-
-        // echo json_encode($data);
         $defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
         $fontDirs = $defaultConfig['fontDir'];
 
         $defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
         $fontData = $defaultFontConfig['fontdata'];
 
-        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [210, 330], 'orientation' => 'L', 'margin_left' => '0', 'margin_right' => '0', 'margin_top' => '0', 'margin_bottom' => '0', 'fontDir' => array_merge($fontDirs, [__DIR__ . '/assets/font',]),
+        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [214, 330], 'orientation' => 'L', 'margin_left' => '0', 'margin_right' => '0', 'margin_top' => '0', 'margin_bottom' => '0', 'fontDir' => array_merge($fontDirs, [__DIR__ . '/assets/font',]),
         'fontdata' => $fontData + [
             'arab' => [
                 // 'R' => 'tradbdo.ttf',
                 'R' => 'trado.ttf',
+                'useOTL' => 0xFF,
+                'useKashida' => 75,
+            ],
+            'arial' => [
+                // 'R' => 'tradbdo.ttf',
+                'R' => 'arial.ttf',
                 'useOTL' => 0xFF,
                 'useKashida' => 75,
             ]
@@ -125,18 +127,6 @@ class Kelas extends CI_CONTROLLER{
         ]);
         
         $mpdf->text_input_as_HTML = true; //(default = false)
-        
-        // $mpdf->autoScriptToLang = true;
-        // $mpdf->baseScript = 1;
-        // $mpdf->autoVietnamese = true;
-        // $mpdf->autoArabic = true;
-        
-        // $kwitansi['data'] = $this->Main_model->get_one("ppu_transfer", ["id" => $id]);
-        
-        
-        // $kwitansi['id'] = substr($kwitansi['data']['id'],0, 3)."/PPU-Im/".date('m', strtotime($kwitansi['data']['tgl']))."/".date('Y', strtotime($kwitansi['data']['tgl']));
-
-        // var_dump($kwitansi);
         $print = $this->load->view('pages/sertifikat/sertifikat', $data, TRUE);
         $mpdf->WriteHTML($print);
         // $mpdf->Output();
