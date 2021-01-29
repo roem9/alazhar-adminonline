@@ -171,20 +171,20 @@
                                 <?php endif;?>
                                 <input type="hidden" name="id_user">
                                 <div class="form-group">
-                                    <label for="kelas">Kelas</label>
-                                    <select name="id_kelas" id="id_kelas_add" class="form-control form-control-sm">
-                                        <option value="">Pilih Kelas</option>
-                                        <?php foreach ($kelas as $data) :?>
-                                            <option value="<?= $data['id_kelas']?>"><?= $data['nama_kelas']?></option>
-                                        <?php endforeach;?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
                                     <label for="program_add">Program</label>
                                     <select name="program_add" id="program_add" class="form-control form-control-sm" required>
                                         <option value="">Pilih Program</option>
                                         <?php foreach ($program as $data) :?>
                                             <option value="<?= $data['program']?>"><?= $data['program']?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="kelas">Kelas</label>
+                                    <select name="id_kelas" id="id_kelas_add" class="form-control form-control-sm">
+                                        <option value="">Pilih Kelas</option>
+                                        <?php foreach ($kelas as $data) :?>
+                                            <option value="<?= $data['id_kelas']?>"><?= $data['nama_kelas']?></option>
                                         <?php endforeach;?>
                                     </select>
                                 </div>

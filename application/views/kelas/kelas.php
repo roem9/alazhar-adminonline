@@ -165,15 +165,11 @@
                 <form action="kelas/add_kelas" method="post" id="formAdd">
                     <div class="form-group">
                         <label for="tgl_mulai">Tgl. Mulai</label>
-                        <input type="date" name="tgl_mulai" id="tgl_mulai_add" class="form-control form-control-sm" value="<?= date('Y-m-d')?>" required>
+                        <input type="date" name="tgl_mulai" id="tgl_mulai_add" class="form-control form-control-sm" required>
                     </div>
                     <div class="form-group">
                         <label for="tgl_selesai">Tgl. Selesai</label>
                         <input type="date" name="tgl_selesai" id="tgl_selesai_add" class="form-control form-control-sm" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="nama_kelas">Nama Kelas</label>
-                        <input type="text" name="nama_kelas" id="nama_kelas_add" class="form-control form-control-sm" required>
                     </div>
                     <div class="form-group">
                         <label for="program">Program</label>
@@ -183,6 +179,10 @@
                                 <option value="<?= $data['program']?>"><?= $data['program']?></option>
                             <?php endforeach;?>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_kelas">Nama Kelas</label>
+                        <input type="text" name="nama_kelas" id="nama_kelas_add" class="form-control form-control-sm" required>
                     </div>
                     <div class="d-flex justify-content-end">
                         <input type="submit" value="Tambah Kelas" class="btn btn-sm btn-primary" id="btnModalAdd">
@@ -243,30 +243,16 @@
                 data : {tgl_mulai : tgl_mulai,tgl_selesai : tgl_selesai,nama_kelas : nama_kelas,program : program},
                 success : function(data){
                     $("#formAdd").trigger("reset");
+        
+                    $("#tgl_mulai_add").val(tgl_mulai);
+                    $("#tgl_selesai_add").val(tgl_selesai);
+
                     var msg = `
                             <div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil menambahkan kelas baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
                     $('.msg-add-data').html(msg);
                     $("#modal-add").scrollTop(0);
                     reload_table();
                 },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    var msg = `
-                        <span class="fas icon-msg fa-times-circle"></span>
-                        <span class="msg">Gagal menambahkan kelas baru</span>
-                        <span class="close-msg">
-                            <span class="fas fa-times"></span>
-                        </span>`;
-                    $('.notification').html(msg);
-                    $('.notification').addClass("show");
-                    $('.notification').addClass("danger");
-                    $('.notification').removeClass("hide");
-                    $('.notification').addClass("showAlert");
-                    setTimeout(function(){
-                        $('.notification').removeClass("show");
-                        $('.notification').addClass("hide");
-                    },5000);
-                }
             })
         }
         return false;
