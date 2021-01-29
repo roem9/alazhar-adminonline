@@ -187,7 +187,7 @@
                                             <option value="<?= $data['id_kelas']?>"><?= $data['nama_kelas']?></option>
                                         <?php endforeach;?>
                                     </select>
-                                    <small id="emailHelp" class="form-text text-danger">*apabila kelas dikosongkan maka akan masuk waiting list</small>
+                                    <small id="emailHelp" class="form-text text-danger">*apabila kelas dikosongkan maka peserta akan masuk waiting list</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="biaya">Biaya</label>
