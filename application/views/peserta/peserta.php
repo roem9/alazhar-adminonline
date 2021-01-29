@@ -78,9 +78,11 @@
                             <li class="nav-item">
                                 <a href="javascript:void(0)" class='nav-link' id="btn-form-2"><i class="fas fa-book"></i></a>
                             </li>
-                            <li class="nav-item">
-                                <a href="javascript:void(0)" class='nav-link' id="btn-form-3">Tambah Kelas/WL</a>
-                            </li>
+                            <?php if($konfirm == 1):?>
+                                <li class="nav-item">
+                                    <a href="javascript:void(0)" class='nav-link' id="btn-form-3">Tambah Kelas/WL</a>
+                                </li>
+                            <?php endif;?>
                         </ul>
                     </div>
                     <div class="card-body cus-font">

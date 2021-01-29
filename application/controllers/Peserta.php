@@ -289,7 +289,8 @@
                     "tgl_lahir" => $user["tgl_lahir"],
                     "alamat" => $user["alamat"],
                     "program" => $this->input->post("program", TRUE),
-                    "hapus" => 0
+                    "hapus" => 0,
+                    "closing" => 1,
                 ];
 
                 $cek = $this->Main_model->get_one("kelas_user", $data);

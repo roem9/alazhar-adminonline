@@ -19,7 +19,7 @@ class Wl_model extends CI_Model {
     {
         $this->db->from("kelas_user as a");
         $this->db->join("user as b", "a.id_user = b.id_user");
-        $this->db->where(["id_kelas" => NULL, "hapus" => 0]);
+        $this->db->where(["id_kelas" => NULL, "hapus" => 0, "closing" => 1]);
  
         $i = 0;
      
@@ -76,7 +76,7 @@ class Wl_model extends CI_Model {
     {
         $this->db->from("kelas_user as a");
         $this->db->join("user as b", "a.id_user = b.id_user");
-        $this->db->where(["id_kelas" => NULL, "hapus" => 0]);
+        $this->db->where(["id_kelas" => NULL, "hapus" => 0, "closing" => 1]);
         
         return $this->db->count_all_results();
     }

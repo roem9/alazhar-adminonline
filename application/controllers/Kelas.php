@@ -74,7 +74,7 @@ class Kelas extends CI_CONTROLLER{
                 
             $row[] = $kelas->program;
             $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$kelas->id_kelas.'" class="btn btn-sm btn-outline-dark peserta">' . COUNT($this->Main_model->get_all("kelas_user", ["id_kelas" => $kelas->id_kelas, "hapus" => 0])) . '</a></center>';
-            $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$kelas->id_kelas.'" class="btn btn-sm btn-outline-warning wl">' . COUNT($this->Main_model->get_all("kelas_user", ["id_kelas" => null, "program" => $kelas->program, "hapus" => 0])) . '</a></center>';
+            $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$kelas->id_kelas.'" class="btn btn-sm btn-outline-warning wl">' . COUNT($this->Main_model->get_all("kelas_user", ["id_kelas" => null, "program" => $kelas->program, "hapus" => 0, "closing" => 1])) . '</a></center>';
             $row[] = '<a href="#modalEdit" data-toggle="modal" data-id="'.$kelas->id_kelas.'" class="btn btn-sm btn-info detail">detail</a>';
 
             $data[] = $row;
@@ -146,7 +146,7 @@ class Kelas extends CI_CONTROLLER{
                 $data['peserta'][$i]['link'] = MD5($peserta['id']);
             }
 
-            $wl = $this->Main_model->get_all("kelas_user", ["id_kelas" => null, "program" => $data['program'], "hapus" => 0]);
+            $wl = $this->Main_model->get_all("kelas_user", ["id_kelas" => null, "program" => $data['program'], "hapus" => 0, "closing" => 1]);
             foreach ($wl as $i => $wl) {
                 $data['wl'][$i] = $this->Main_model->get_one("user", ["id_user" => $wl['id_user']]);
                 $data['wl'][$i]['id'] = $wl['id'];
