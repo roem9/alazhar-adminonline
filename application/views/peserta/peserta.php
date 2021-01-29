@@ -162,7 +162,7 @@
                         <div id="form-3">
                             <form id="formAddKelas">
                                 <div class="msgAddKelas"></div>
-                                <div class="alert alert-info"><i class="fa fa-info-circle text-info"></i> apabila kelas dikosongkan maka akan masuk waiting list</div>
+                                <!-- <div class="alert alert-info"><i class="fa fa-info-circle text-info"></i> apabila kelas dikosongkan maka akan masuk waiting list</div> -->
                                 <?php if($konfirm == 0):?>
                                     <div class="form-group">
                                         <label for="catatan_edit">Catatan</label>
@@ -187,6 +187,7 @@
                                             <option value="<?= $data['id_kelas']?>"><?= $data['nama_kelas']?></option>
                                         <?php endforeach;?>
                                     </select>
+                                    <small id="emailHelp" class="form-text text-danger">*apabila kelas dikosongkan maka akan masuk waiting list</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="biaya">Biaya</label>
