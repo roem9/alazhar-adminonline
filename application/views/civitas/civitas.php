@@ -160,29 +160,39 @@
         },
         ],
     });
+    
+    // untuk menghindari input double ajax 
+    var finish = 1;
 
     $("#formAdd").submit(function(){
-        if(confirm("Yakin akan menambahkan pengajar baru?")){
-            var tgl_masuk = $("#tgl_masuk_add").val();
-            var nama_civitas = $("#nama_civitas_add").val();
-            var t4_lahir = $("#t4_lahir_add").val();
-            var tgl_lahir = $("#tgl_lahir_add").val();
-            var alamat = $("#alamat_add").val();
-            var no_hp = $("#no_hp_add").val();
-            $.ajax({
-                type : "POST",
-                url : "<?= base_url()?>civitas/add_civitas",
-                dataType : "JSON",
-                data : {tgl_masuk : tgl_masuk,nama_civitas : nama_civitas,t4_lahir : t4_lahir,tgl_lahir : tgl_lahir,alamat : alamat,no_hp : no_hp},
-                success : function(data){
-                    $("#formAdd").trigger("reset");
-                    var msg = `
-                            <div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil menambahkan pengajar baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
-                    $('.msg-add-data').html(msg);
-                    $("#modal-add").scrollTop(0);
-                    reload_table();
-                }
-            })
+        if(finish == 1){
+            finish = 2;
+            if(confirm("Yakin akan menambahkan pengajar baru?")){
+                var tgl_masuk = $("#tgl_masuk_add").val();
+                var nama_civitas = $("#nama_civitas_add").val();
+                var t4_lahir = $("#t4_lahir_add").val();
+                var tgl_lahir = $("#tgl_lahir_add").val();
+                var alamat = $("#alamat_add").val();
+                var no_hp = $("#no_hp_add").val();
+                $.ajax({
+                    type : "POST",
+                    url : "<?= base_url()?>civitas/add_civitas",
+                    dataType : "JSON",
+                    data : {tgl_masuk : tgl_masuk,nama_civitas : nama_civitas,t4_lahir : t4_lahir,tgl_lahir : tgl_lahir,alamat : alamat,no_hp : no_hp},
+                    success : function(data){
+                        $("#formAdd").trigger("reset");
+                        var msg = `
+                                <div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil menambahkan pengajar baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
+                        $('.msg-add-data').html(msg);
+                        $("#modal-add").scrollTop(0);
+                        reload_table();
+
+                        finish = 1;
+                    }
+                })
+            } else {
+                finish = 1;
+            }
         }
         return false;
     })

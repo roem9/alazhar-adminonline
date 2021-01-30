@@ -230,30 +230,40 @@
         ],
     });
     
-    $("#formAdd").submit(function(){
-        if(confirm("Yakin akan menambahkan kelas baru?")){
-            var tgl_mulai = $("#tgl_mulai_add").val();
-            var tgl_selesai = $("#tgl_selesai_add").val();
-            var nama_kelas = $("#nama_kelas_add").val();
-            var program = $("#program_add").val();
-            $.ajax({
-                type : "POST",
-                url : "<?= base_url()?>kelas/add_kelas",
-                dataType : "JSON",
-                data : {tgl_mulai : tgl_mulai,tgl_selesai : tgl_selesai,nama_kelas : nama_kelas,program : program},
-                success : function(data){
-                    $("#formAdd").trigger("reset");
-        
-                    $("#tgl_mulai_add").val(tgl_mulai);
-                    $("#tgl_selesai_add").val(tgl_selesai);
+    // untuk menghindari input double ajax 
+    var finish = 1;
 
-                    var msg = `
-                            <div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil menambahkan kelas baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
-                    $('.msg-add-data').html(msg);
-                    $("#modal-add").scrollTop(0);
-                    reload_table();
-                },
-            })
+    $("#formAdd").submit(function(){
+        if(finish == 1){
+            finish = 2;
+            if(confirm("Yakin akan menambahkan kelas baru?")){
+                var tgl_mulai = $("#tgl_mulai_add").val();
+                var tgl_selesai = $("#tgl_selesai_add").val();
+                var nama_kelas = $("#nama_kelas_add").val();
+                var program = $("#program_add").val();
+                $.ajax({
+                    type : "POST",
+                    url : "<?= base_url()?>kelas/add_kelas",
+                    dataType : "JSON",
+                    data : {tgl_mulai : tgl_mulai,tgl_selesai : tgl_selesai,nama_kelas : nama_kelas,program : program},
+                    success : function(data){
+                        $("#formAdd").trigger("reset");
+            
+                        $("#tgl_mulai_add").val(tgl_mulai);
+                        $("#tgl_selesai_add").val(tgl_selesai);
+
+                        var msg = `
+                                <div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil menambahkan kelas baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
+                        $('.msg-add-data').html(msg);
+                        $("#modal-add").scrollTop(0);
+                        reload_table();
+
+                        finish = 1;
+                    },
+                })
+            } else {
+                finish = 1;
+            }
         }
         return false;
     })

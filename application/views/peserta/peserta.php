@@ -354,48 +354,40 @@
         },
         ],
     });
+    
+    // untuk menghindari input double ajax 
+    var finish = 1;
 
     $("#formAdd").submit(function(){
-        if(confirm("Yakin akan menambahkan peserta baru?")){
-            var tgl_masuk = $("#tgl_masuk_add").val();
-            var nama = $("#nama_add").val();
-            var t4_lahir = $("#t4_lahir_add").val();
-            var tgl_lahir = $("#tgl_lahir_add").val();
-            var alamat = $("#alamat_add").val();
-            var no_hp = $("#no_hp_add").val();
-            var email = $("#email_add").val();
-            $.ajax({
-                type : "POST",
-                url : "<?= base_url()?>peserta/add_peserta",
-                dataType : "JSON",
-                data : {tgl_masuk : tgl_masuk,nama : nama,t4_lahir : t4_lahir,tgl_lahir : tgl_lahir,alamat : alamat,no_hp : no_hp,email : email},
-                success : function(data){
-                    $("#formAdd").trigger("reset");
-                    var msg = `
-                            <div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil menambahkan peserta baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
-                    $('.msg-add-data').html(msg);
-                    $("#modal-add").scrollTop(0);
-                    reload_table();
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    var msg = `
-                        <span class="fas icon-msg fa-times-circle"></span>
-                        <span class="msg">Gagal menambahkan kelas baru</span>
-                        <span class="close-msg">
-                            <span class="fas fa-times"></span>
-                        </span>`;
-                    $('.notification').html(msg);
-                    $('.notification').addClass("show");
-                    $('.notification').addClass("danger");
-                    $('.notification').removeClass("hide");
-                    $('.notification').addClass("showAlert");
-                    setTimeout(function(){
-                        $('.notification').removeClass("show");
-                        $('.notification').addClass("hide");
-                    },5000);
-                }
-            })
+        if(finish == 1){
+            finish = 2;
+            if(confirm("Yakin akan menambahkan peserta baru?")){
+                var tgl_masuk = $("#tgl_masuk_add").val();
+                var nama = $("#nama_add").val();
+                var t4_lahir = $("#t4_lahir_add").val();
+                var tgl_lahir = $("#tgl_lahir_add").val();
+                var alamat = $("#alamat_add").val();
+                var no_hp = $("#no_hp_add").val();
+                var email = $("#email_add").val();
+                $.ajax({
+                    type : "POST",
+                    url : "<?= base_url()?>peserta/add_peserta",
+                    dataType : "JSON",
+                    data : {tgl_masuk : tgl_masuk,nama : nama,t4_lahir : t4_lahir,tgl_lahir : tgl_lahir,alamat : alamat,no_hp : no_hp,email : email},
+                    success : function(data){
+                        $("#formAdd").trigger("reset");
+                        var msg = `
+                                <div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil menambahkan peserta baru<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
+                        $('.msg-add-data').html(msg);
+                        $("#modal-add").scrollTop(0);
+                        reload_table();
+
+                        finish = 1;
+                    }
+                })
+            }
+        } else {
+            finish = 1;
         }
         return false;
     })
@@ -523,35 +515,43 @@
     })
 
     $("#formAddClosing").submit(function(){
-        if(confirm("Yakin akan menambahkan closing?")){
-            if (!$('input:radio', this).is(':checked')) {
-                alert('Pilih program terlebih dahulu');
-                return false;
-            }
-            var id_user = $("#id_peserta_closing").val();
-            var tgl_closing = $("#tgl_closing_add").val();
-            var program = $("input[name='program_add']").val();
-            var biaya = $("#biaya_add").val();
-            var sumber = $("#sumber_add").val();
-            var sumber_lainnya = $("#sumber_lainnya_add").val();
-            $.ajax({
-                type : "POST",
-                url : "<?= base_url()?>closing/add_closing_konfirm",
-                dataType : "JSON",
-                data : {id_user: id_user, tgl_closing:tgl_closing, sumber:sumber, sumber_lainnya:sumber_lainnya, program:program, biaya:biaya},
-                success : function(data){
-                    var msg = `
-                            <div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil menambahkan data closing<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
-                    $('.msgPeserta').html(msg);
-                    reload_table();
-                    $("#modalClosing").modal("hide")
-                    $("#formAddClosing").trigger("reset");
-                    $("#sumber_lainnya_add").prop("disabled", true);
-                    $("#sumber_lainnya_add").prop("required", false);
-                }, error: function(xhr, status, error) {
-                    alert(xhr.responseText);
+        if(finish == 1){
+            finish = 2;
+            if(confirm("Yakin akan menambahkan closing?")){
+                if (!$('input:radio', this).is(':checked')) {
+                    alert('Pilih program terlebih dahulu');
+                    return false;
                 }
-            })
+                var id_user = $("#id_peserta_closing").val();
+                var tgl_closing = $("#tgl_closing_add").val();
+                var program = $("input[name='program_add']").val();
+                var biaya = $("#biaya_add").val();
+                var sumber = $("#sumber_add").val();
+                var sumber_lainnya = $("#sumber_lainnya_add").val();
+                $.ajax({
+                    type : "POST",
+                    url : "<?= base_url()?>closing/add_closing_konfirm",
+                    dataType : "JSON",
+                    data : {id_user: id_user, tgl_closing:tgl_closing, sumber:sumber, sumber_lainnya:sumber_lainnya, program:program, biaya:biaya},
+                    success : function(data){
+                        var msg = `
+                                <div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa fa-check-circle text-success mr-1"></i> Berhasil menambahkan data closing<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
+                        $('.msgPeserta').html(msg);
+                        reload_table();
+                        $("#modalClosing").modal("hide")
+                        $("#formAddClosing").trigger("reset");
+                        $("#sumber_lainnya_add").prop("disabled", true);
+                        $("#sumber_lainnya_add").prop("required", false);
+
+                        finish = 1;
+
+                    }, error: function(xhr, status, error) {
+                        alert(xhr.responseText);
+                    }
+                })
+            } else {
+                finish = 1;
+            }
         }
         return false;
     })
