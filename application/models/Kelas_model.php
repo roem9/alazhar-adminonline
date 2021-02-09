@@ -86,8 +86,13 @@ class Kelas_model extends CI_Model {
         $id = $this->input->post("id");
         $nilai = $this->input->post("nilai");
 
-        $this->Main_model->edit_data("kelas_user", ["id" => $id], ["nilai" => $nilai]);
-        return 1;
+        if($nilai != ""){
+            $this->Main_model->edit_data("kelas_user", ["id" => $id], ["nilai" => $nilai, "sertifikat" => 1]);
+            return 1;
+        } else {
+            $this->Main_model->edit_data("kelas_user", ["id" => $id], ["nilai" => $nilai, "sertifikat" => 0]);
+            return 0;
+        }
     }
  
 }

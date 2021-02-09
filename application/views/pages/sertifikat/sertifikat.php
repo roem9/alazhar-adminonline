@@ -68,21 +68,40 @@
             padding: 0;
         }
 
+        .form-nama{
+			position: absolute;
+			left: 525px;
+			top: 362px;
+            font-size: 15px;
+		}
+        .form-ttl{
+			position: absolute;
+			left: 525px;
+			top: 403px;
+            font-size: 15px;
+		}
+        .form-alamat{
+			position: absolute;
+			left: 525px;
+			top: 448px;
+            font-size: 15px;
+		}
+
         .nama{
 			position: absolute;
-			left: 640px;
+			left: 637px;
 			top: 362px;
             font-size: 15px;
 		}
         .ttl{
 			position: absolute;
-			left: 640px;
+			left: 637px;
 			top: 403px;
             font-size: 15px;
 		}
         .alamat{
 			position: absolute;
-			left: 640px;
+			left: 637px;
 			top: 448px;
             font-size: 15px;
 		}
@@ -157,9 +176,13 @@
     <body>
         <div class="bg-sertifikat">
         </div>
-        <p class="nama"><b><?= $peserta['nama']?></b></p>
-        <p class="ttl"><b><?= $peserta['t4_lahir']?>, <?= tgl_indo(date("d-m-Y", strtotime($peserta['tgl_lahir'])))?></b></p>
-        <p class="alamat"><b><?= $peserta['alamat']?></b></p>
+        <!-- <img src="<?= base_url()?>assets/img/sertifikat.jpg" alt="" srcset=""> -->
+        <p class="form-nama"><b>Nama</b></p>
+        <p class="form-ttl"><b>TTL</b></p>
+        <p class="form-alamat"><b>Alamat</b></p>
+        <p class="nama"><b>: <?= $peserta['nama']?></b></p>
+        <p class="ttl"><b>: <?= $peserta['t4_lahir']?>, <?= tgl_indo(date("d-m-Y", strtotime($peserta['tgl_lahir'])))?></b></p>
+        <p class="alamat">: <b><?= $peserta['alamat']?></b></p>
 
         <div class="p1"><p style="text-align: center; margin: 0px">قَدْ دَرَسَ /دَرَسَتْ اللغة العربيّة فِي الْفَصْل "<?= $kelas['program_arab']?>" مِنَ التَّارِيْخ <?= angka_arab(date("j", strtotime($kelas["tgl_mulai"]))) ?> مِنْ </p><span style="font-size: 1px">ه</span></div>
         <div class="p2"><p style="text-align: center; margin: 0px"><?= bulan_arab(date("m", strtotime($kelas["tgl_mulai"]))) ?> إِلَى <?= tgl_arab(date("j-m", strtotime($kelas["tgl_selesai"])))?> <?= angka_arab(date("Y", strtotime($kelas["tgl_selesai"])))?>، وَ قَدْ نَجَحَ /تْ فِي الإمتِحَانِ النِّهَائِ </p><span style="font-size:1px">ن</span></div>

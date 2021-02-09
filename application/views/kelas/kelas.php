@@ -663,7 +663,12 @@
             data: {id:id, nilai:nilai},
             success: function(result){
                 delete_msg();
-                $("#msg-"+id).html(`<small class="form-text text-success msg-nilai">berhasil menginputkan nilai</small>`)
+                // $("#msg-"+id).html(`<small class="form-text text-success msg-nilai">berhasil menginputkan nilai</small>`)
+                if(result == 1){
+                    $("#msg-"+id).html(`<small class="form-text text-success msg-nilai">berhasil menginputkan nilai</small>`)
+                } else {
+                    $("#msg-"+id).html(`<small class="form-text text-danger msg-nilai">nilai belum diinputkan</small>`)
+                }
             }
         })
     })

@@ -243,7 +243,7 @@ class Kelas extends CI_CONTROLLER{
 
         public function add_nilai_sertifikat(){
             $data = $this->Kelas_model->add_nilai_sertifikat();
-            echo json_encode("1");
+            echo json_encode($data);
         }
     // add
 
