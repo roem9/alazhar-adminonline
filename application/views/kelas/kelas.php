@@ -574,54 +574,157 @@
                     let html = "";
 
                     // let peserta = data.peserta;
-                    if(data.peserta){
-                        $("#jumPeserta").html(data.peserta.length)
-                        data.peserta.forEach((element, i) => {
-                            if(data.status == "aktif") btnDelete = `<a href="javascript:void(0)" id="keluar_kelas" class="mr-1" data-id="`+element.id+`|`+element.nama+`|`+data.nama_kelas+`"><i class="fa fa-minus-circle text-danger"></i></a>`
-                            else btnDelete = "";
+                    if(data.program == "Tahfidz Putra" || data.program == "Tahfidz Putri"){
+                        if(data.peserta){
+                            $("#jumPeserta").html(data.peserta.length)
+                            data.peserta.forEach((element, i) => {
+                                if(data.status == "aktif") btnDelete = `<a href="javascript:void(0)" id="keluar_kelas" class="mr-1" data-id="`+element.id+`|`+element.nama+`|`+data.nama_kelas+`"><i class="fa fa-minus-circle text-danger"></i></a>`
+                                else btnDelete = "";
 
-                            if(element.nilai == "") nilai = `<small class="form-text text-danger">nilai belum diinputkan</small>`
-                            else nilai = ``
+                                if(element.nilai == "") nilai = `<small class="form-text text-danger">nilai belum diinputkan</small>`
+                                else nilai = ``
+
+                                dataNilai = [];
+
+                                for (let i = 0; i < 30; i++) {
+                                    dataNilai[i] = ""
+                                }
+
+                                if(element.nilai == "الأول"){ dataNilai[0] = "selected"}else{dataNilai[0] = ""}
+                                if(element.nilai == "الثاني"){ dataNilai[1] = "selected"}else{dataNilai[1] = ""}
+                                if(element.nilai == "الثالث"){ dataNilai[2] = "selected"}else{dataNilai[2] = ""}
+                                if(element.nilai == "الرابع"){ dataNilai[3] = "selected"}else{dataNilai[3] = ""}
+                                if(element.nilai == "الخامس"){ dataNilai[4] = "selected"}else{dataNilai[4] = ""}
+                                if(element.nilai == "السادس"){ dataNilai[5] = "selected"}else{dataNilai[5] = ""}
+                                if(element.nilai == "السابع"){ dataNilai[6] = "selected"}else{dataNilai[6] = ""}
+                                if(element.nilai == "الثامن"){ dataNilai[7] = "selected"}else{dataNilai[7] = ""}
+                                if(element.nilai == "التاسع"){ dataNilai[8] = "selected"}else{dataNilai[8] = ""}
+                                if(element.nilai == "العاشر"){ dataNilai[9] = "selected"}else{dataNilai[9] = ""}
+                                if(element.nilai == "الحادي عشر"){ dataNilai[10] = "selected"}else{dataNilai[10] = ""}
+                                if(element.nilai == "الثاني عشر"){ dataNilai[11] = "selected"}else{dataNilai[11] = ""}
+                                if(element.nilai == "الثالث عشر"){ dataNilai[12] = "selected"}else{dataNilai[12] = ""}
+                                if(element.nilai == "الرابع عشر"){ dataNilai[13] = "selected"}else{dataNilai[13] = ""}
+                                if(element.nilai == "الخامس عشر"){ dataNilai[14] = "selected"}else{dataNilai[14] = ""}
+                                if(element.nilai == "السادس عشر"){ dataNilai[15] = "selected"}else{dataNilai[15] = ""}
+                                if(element.nilai == "السابع عشر"){ dataNilai[16] = "selected"}else{dataNilai[16] = ""}
+                                if(element.nilai == "الثامن عشر"){ dataNilai[17] = "selected"}else{dataNilai[17] = ""}
+                                if(element.nilai == "التاسع عشر"){ dataNilai[18] = "selected"}else{dataNilai[18] = ""}
+                                if(element.nilai == "العشرون"){ dataNilai[19] = "selected"}else{dataNilai[19] = ""}
+                                if(element.nilai == "الحادي و العشرون"){ dataNilai[20] = "selected"}else{dataNilai[20] = ""}
+                                if(element.nilai == "الثاني و العشرون"){ dataNilai[21] = "selected"}else{dataNilai[21] = ""}
+                                if(element.nilai == "الثالث و العشرون"){ dataNilai[22] = "selected"}else{dataNilai[22] = ""}
+                                if(element.nilai == "الرابع و العشرون"){ dataNilai[23] = "selected"}else{dataNilai[23] = ""}
+                                if(element.nilai == "الخامس و العشرون"){ dataNilai[24] = "selected"}else{dataNilai[24] = ""}
+                                if(element.nilai == "السادس و العشرون"){ dataNilai[25] = "selected"}else{dataNilai[25] = ""}
+                                if(element.nilai == "السابع و العشرون"){ dataNilai[26] = "selected"}else{dataNilai[26] = ""}
+                                if(element.nilai == "الثامن و العشرون"){ dataNilai[27] = "selected"}else{dataNilai[27] = ""}
+                                if(element.nilai == "التاسع و العشرون"){ dataNilai[28] = "selected"}else{dataNilai[28] = ""}
+                                if(element.nilai == "الثلاثون"){ dataNilai[29] = "selected"}else{dataNilai[29] = ""}
+                                html += `<li class="list-group-item d-flex justify-content-between">
+                                            <span>
+                                                `+btnDelete+`
+                                                `+element.nama+`<br>
+                                                <div class="form-inline mt-1">
+                                                    <select name="nilai" id="nilai`+element.id+`" class="form-control form-control-sm mr-1">
+                                                        <option value="">Juz</option>
+                                                        <option `+dataNilai[0]+` value="الأول">الأول</option>
+                                                        <option `+dataNilai[1]+` value="الثاني">الثاني</option>
+                                                        <option `+dataNilai[2]+` value="الثالث">الثالث</option>
+                                                        <option `+dataNilai[3]+` value="الرابع">الرابع</option>
+                                                        <option `+dataNilai[4]+` value="الخامس">الخامس</option>
+                                                        <option `+dataNilai[5]+` value="السادس">السادس</option>
+                                                        <option `+dataNilai[6]+` value="السابع">السابع</option>
+                                                        <option `+dataNilai[7]+` value="الثامن">الثامن</option>
+                                                        <option `+dataNilai[8]+` value="التاسع">التاسع</option>
+                                                        <option `+dataNilai[9]+` value="العاشر">العاشر</option>
+                                                        <option `+dataNilai[10]+` value="الحادي عشر">الحادي عشر</option>
+                                                        <option `+dataNilai[11]+` value="الثاني عشر">الثاني عشر</option>
+                                                        <option `+dataNilai[12]+` value="الثالث عشر">الثالث عشر</option>
+                                                        <option `+dataNilai[13]+` value="الرابع عشر">الرابع عشر</option>
+                                                        <option `+dataNilai[14]+` value="الخامس عشر">الخامس عشر</option>
+                                                        <option `+dataNilai[15]+` value="السادس عشر">السادس عشر</option>
+                                                        <option `+dataNilai[16]+` value="السابع عشر">السابع عشر</option>
+                                                        <option `+dataNilai[17]+` value="الثامن عشر">الثامن عشر</option>
+                                                        <option `+dataNilai[18]+` value="التاسع عشر">التاسع عشر</option>
+                                                        <option `+dataNilai[19]+` value="العشرون">العشرون</option>
+                                                        <option `+dataNilai[20]+` value="الحادي و العشرون">الحادي و العشرون</option>
+                                                        <option `+dataNilai[21]+` value="الثاني و العشرون">الثاني و العشرون</option>
+                                                        <option `+dataNilai[22]+` value="الثالث و العشرون">الثالث و العشرون</option>
+                                                        <option `+dataNilai[23]+` value="الرابع و العشرون">الرابع و العشرون</option>
+                                                        <option `+dataNilai[24]+` value="الخامس و العشرون">الخامس و العشرون</option>
+                                                        <option `+dataNilai[25]+` value="السادس و العشرون">السادس و العشرون</option>
+                                                        <option `+dataNilai[26]+` value="السابع و العشرون">السابع و العشرون</option>
+                                                        <option `+dataNilai[27]+` value="الثامن و العشرون">الثامن و العشرون</option>
+                                                        <option `+dataNilai[28]+` value="التاسع و العشرون">التاسع و العشرون</option>
+                                                        <option `+dataNilai[29]+` value="الثلاثون">الثلاثون</option>
+                                                    </select>
+                                                    <a href="javascript:void(0)" class="btn btn-sm btn-primary" id="btnSaveNilai" data-id="`+element.id+`"><i class="fa fa-save"></i></a>
+                                                </div>
+                                                <span id="msg-`+element.id+`">`+nilai+`</span>
+                                            </span>
+                                            <span>
+                                                <a href="<?= base_url()?>kelas/syahadah/`+element.link+`" target="_blank" class="btn btn-warning btn-sm"><i class="fa fa-award"></i></a>
+                                            </span>
+                                        </li>`;
+                            });
                             
-                            mumtaz = "";
-                            jj = "";
-                            jayyid = "";
-                            maqbul = "";
-
-                            if(element.nilai == "ممتاز"){ mumtaz = "selected" }else {mumtaz = ""}
-                            if(element.nilai == "جيد جدا"){ jj = "selected" }else {jj = ""}
-                            if(element.nilai == "جيد"){ jayyid = "selected" }else {jayyid = ""}
-                            if(element.nilai == "مقبول"){ maqbul = "selected" }else {maqbul = ""}
-
-                            html += `<li class="list-group-item d-flex justify-content-between">
-                                        <span>
-                                            `+btnDelete+`
-                                            `+element.nama+`<br>
-                                            <div class="form-inline mt-1">
-                                                <select name="nilai" id="nilai`+element.id+`" class="form-control form-control-sm mr-1">
-                                                    <option value="">Nilai</option>
-                                                    <option `+mumtaz+` value="ممتاز">ممتاز</option>
-                                                    <option `+jj+` value="جيد جدا">جيد جدا</option>
-                                                    <option `+jayyid+` value="جيد">جيد</option>
-                                                    <option `+maqbul+` value="مقبول">مقبول</option>
-                                                </select>
-                                                <a href="javascript:void(0)" class="btn btn-sm btn-primary" id="btnSaveNilai" data-id="`+element.id+`"><i class="fa fa-save"></i></a>
-                                            </div>
-                                            <span id="msg-`+element.id+`">`+nilai+`</span>
-                                        </span>
-                                        <span>
-                                            <a href="<?= base_url()?>kelas/syahadah/`+element.link+`" target="_blank" class="btn btn-warning btn-sm"><i class="fa fa-award"></i></a>
-                                        </span>
-                                    </li>`;
-                        });
-                        
-
-                        $("#list-peserta").html(html);
-                        $("#btnPeserta").show();
+                            $("#list-peserta").html(html);
+                            $("#btnPeserta").show();
+                        } else {
+                            $("#jumPeserta").html(0)
+                            $("#list-peserta").html(`<div class="alert alert-warning"><i class="fa fa-exclamation-circle mr-1 text-warning"></i> List peserta kosong</div>`);
+                            $("#btnPeserta").hide();
+                        }
                     } else {
-                        $("#jumPeserta").html(0)
-                        $("#list-peserta").html(`<div class="alert alert-warning"><i class="fa fa-exclamation-circle mr-1 text-warning"></i> List peserta kosong</div>`);
-                        $("#btnPeserta").hide();
+                        if(data.peserta){
+                            $("#jumPeserta").html(data.peserta.length)
+                            data.peserta.forEach((element, i) => {
+                                if(data.status == "aktif") btnDelete = `<a href="javascript:void(0)" id="keluar_kelas" class="mr-1" data-id="`+element.id+`|`+element.nama+`|`+data.nama_kelas+`"><i class="fa fa-minus-circle text-danger"></i></a>`
+                                else btnDelete = "";
+
+                                if(element.nilai == "") nilai = `<small class="form-text text-danger">nilai belum diinputkan</small>`
+                                else nilai = ``
+                                
+                                mumtaz = "";
+                                jj = "";
+                                jayyid = "";
+                                maqbul = "";
+
+                                if(element.nilai == "ممتاز"){ mumtaz = "selected" }else {mumtaz = ""}
+                                if(element.nilai == "جيد جدا"){ jj = "selected" }else {jj = ""}
+                                if(element.nilai == "جيد"){ jayyid = "selected" }else {jayyid = ""}
+                                if(element.nilai == "مقبول"){ maqbul = "selected" }else {maqbul = ""}
+
+                                html += `<li class="list-group-item d-flex justify-content-between">
+                                            <span>
+                                                `+btnDelete+`
+                                                `+element.nama+`<br>
+                                                <div class="form-inline mt-1">
+                                                    <select name="nilai" id="nilai`+element.id+`" class="form-control form-control-sm mr-1">
+                                                        <option value="">Nilai</option>
+                                                        <option `+mumtaz+` value="ممتاز">ممتاز</option>
+                                                        <option `+jj+` value="جيد جدا">جيد جدا</option>
+                                                        <option `+jayyid+` value="جيد">جيد</option>
+                                                        <option `+maqbul+` value="مقبول">مقبول</option>
+                                                    </select>
+                                                    <a href="javascript:void(0)" class="btn btn-sm btn-primary" id="btnSaveNilai" data-id="`+element.id+`"><i class="fa fa-save"></i></a>
+                                                </div>
+                                                <span id="msg-`+element.id+`">`+nilai+`</span>
+                                            </span>
+                                            <span>
+                                                <a href="<?= base_url()?>kelas/syahadah/`+element.link+`" target="_blank" class="btn btn-warning btn-sm"><i class="fa fa-award"></i></a>
+                                            </span>
+                                        </li>`;
+                            });
+                            
+
+                            $("#list-peserta").html(html);
+                            $("#btnPeserta").show();
+                        } else {
+                            $("#jumPeserta").html(0)
+                            $("#list-peserta").html(`<div class="alert alert-warning"><i class="fa fa-exclamation-circle mr-1 text-warning"></i> List peserta kosong</div>`);
+                            $("#btnPeserta").hide();
+                        }
                     }
 
                     html = "";
