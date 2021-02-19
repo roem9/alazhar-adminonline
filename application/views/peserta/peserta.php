@@ -116,11 +116,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="t4_lahir">Tempat Lahir</label>
-                                        <input type="text" name="t4_lahir" id="t4_lahir_edit" class="form-control form-control-sm" required>
+                                        <input type="text" name="t4_lahir" id="t4_lahir_edit" class="form-control form-control-sm">
                                     </div>
                                     <div class="form-group">
                                         <label for="tgl_lahir">Tgl Lahir</label>
-                                        <input type="date" name="tgl_lahir" id="tgl_lahir_edit" class="form-control form-control-sm" required>
+                                        <input type="date" name="tgl_lahir" id="tgl_lahir_edit" class="form-control form-control-sm">
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email</label>
@@ -242,11 +242,11 @@
                     </div>
                     <div class="form-group">
                         <label for="t4_lahir">Tempat Lahir</label>
-                        <input type="text" name="t4_lahir" id="t4_lahir_add" class="form-control form-control-sm" required>
+                        <input type="text" name="t4_lahir" id="t4_lahir_add" class="form-control form-control-sm">
                     </div>
                     <div class="form-group">
                         <label for="tgl_lahir">Tgl Lahir</label>
-                        <input type="date" name="tgl_lahir" id="tgl_lahir_add" class="form-control form-control-sm" required>
+                        <input type="date" name="tgl_lahir" id="tgl_lahir_add" class="form-control form-control-sm">
                     </div>
                     <div class="form-group">
                         <label for="alamat">Alamat</label>

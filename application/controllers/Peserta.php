@@ -338,7 +338,7 @@
 
             public function add_peserta(){
                 $user = $this->username($this->input->post("tgl_masuk", TRUE));
-                $password = date('dmY', strtotime($this->input->post("tgl_lahir", TRUE)));
+                // $password = date('dmY', strtotime($this->input->post("tgl_lahir", TRUE)));
                 $data = [
                     "nama" => $this->input->post("nama", TRUE),
                     "no_hp" => $this->input->post("no_hp", TRUE),
@@ -348,7 +348,8 @@
                     "t4_lahir" => $this->input->post("t4_lahir", TRUE),
                     "email" => $this->input->post("email", TRUE),
                     "username" => $user,
-                    "password" => MD5($password),
+                    "konfirm" => 1
+                    // "password" => MD5($password),
                 ];
 
                 $this->Main_model->add_data("user", $data);
