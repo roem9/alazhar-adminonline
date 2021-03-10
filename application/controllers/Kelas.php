@@ -127,7 +127,12 @@ class Kelas extends CI_CONTROLLER{
         ]);
         
         $mpdf->text_input_as_HTML = true; //(default = false)
-        $print = $this->load->view('pages/sertifikat/sertifikat', $data, TRUE);
+        if($kelas['program'] == "Jurumiyyah") {
+            $print = $this->load->view('pages/sertifikat/sertifikatjurumiyyah', $data, TRUE);
+        } else {
+            $print = $this->load->view('pages/sertifikat/sertifikat', $data, TRUE);
+        }
+
         $mpdf->WriteHTML($print);
         // $mpdf->Output();
         $mpdf->Output($data['kelas']['nama_kelas']."_".$data['peserta']['nama'].".pdf", 'I');

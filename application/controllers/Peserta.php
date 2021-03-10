@@ -109,8 +109,11 @@
                     } else $row[] = '<center>-</center>';
 
                     // btn delete peserta 
-                    if($peserta->username == "") $row[] = '<center><a href="javascript:void(0)" data-id="'.$peserta->id_user.'|'.$peserta->nama.'" class="btn btn-sm btn-danger delete_peserta"><i class="fa fa-trash-alt"></i></a></center>';
-                    else $row[] = "<center>-</center>";
+                    if($peserta->username == "") 
+                        $row[] = '<center><a href="javascript:void(0)" data-id="'.$peserta->id_user.'|'.$peserta->nama.'" class="btn btn-sm btn-danger delete_peserta"><i class="fa fa-trash-alt"></i></a></center>';
+                    else 
+                        // $row[] = "<center>-</center>";
+                        $row[] = '<center><a href="javascript:void(0)" data-id="'.$peserta->id_user.'|'.$peserta->nama.'" class="btn btn-sm btn-danger delete_peserta"><i class="fa fa-trash-alt"></i></a></center>';
 
                     // btn waiting list peserta 
                     $row[] = '<center><a href="#modalEdit" data-toggle="modal" data-id="'.$peserta->id_user.'" class="btn btn-sm btn-outline-warning peserta">' . COUNT($this->Main_model->get_all("kelas_user", ["id_user" => $peserta->id_user, "id_kelas =" => NULL, "hapus" => 0])) . '</a></center>';

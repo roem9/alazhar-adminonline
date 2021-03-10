@@ -108,7 +108,7 @@
 
         .p1{
             /* background-color: red; */
-            width: 500px;
+            width: 520px;
 			position: absolute;
             right: 185px;
 			top: 532px;
@@ -120,7 +120,7 @@
         
         .p2{
             /* background-color: red; */
-            width: 500px;
+            width: 520px;
 			position: absolute;
             right: 185px;
 			top: 580px;
@@ -132,7 +132,7 @@
         
         .p3{
             /* background-color: red; */
-            width: 500px;
+            width: 520px;
 			position: absolute;
 			right: 185px;
 			top: 628px;
@@ -149,6 +149,22 @@
         .nilai{
 			position: absolute;
 			right: 370;
+			top: 670px;
+            font-family: arial;
+            /* direction: 'rtl'; */
+        }
+
+        .nilai2{
+			position: absolute;
+			right: 300;
+			top: 670px;
+            font-family: arial;
+            /* direction: 'rtl'; */
+        }
+
+        .nilai3{
+			position: absolute;
+			right: 260;
 			top: 670px;
             font-family: arial;
             /* direction: 'rtl'; */
@@ -181,17 +197,55 @@
         <p class="form-ttl"><b>TTL</b></p>
         <p class="form-alamat"><b>Alamat</b></p>
         <p class="nama"><b>: <?= $peserta['nama']?></b></p>
-        <p class="ttl"><b>: <?= $peserta['t4_lahir']?>, <?= tgl_indo(date("d-m-Y", strtotime($peserta['tgl_lahir'])))?></b></p>
+        <?php if($peserta['t4_lahir'] == "" || $peserta['tgl_lahir'] == "0000-00-00") :?>
+            <p class="ttl"><b>: -<span style="font-size: 5px">.</span> </b></p>
+        <?php else :?>
+            <p class="ttl"><b>: <?= $peserta['t4_lahir']?>, <?= tgl_indo(date("d-m-Y", strtotime($peserta['tgl_lahir'])))?></b></p>
+        <?php endif;?>
         <p class="alamat">: <b><?= $peserta['alamat']?></b></p>
 
-        <div class="p1"><p style="text-align: center; margin: 0px">قَدْ دَرَسَ /دَرَسَتْ اللغة العربيّة فِي الْفَصْل "<?= $kelas['program_arab']?>" مِنَ التَّارِيْخ <?= angka_arab(date("j", strtotime($kelas["tgl_mulai"]))) ?> مِنْ </p><span style="font-size: 1px">ه</span></div>
-        <div class="p2"><p style="text-align: center; margin: 0px"><?= bulan_arab(date("m", strtotime($kelas["tgl_mulai"]))) ?> إِلَى <?= tgl_arab(date("j-m", strtotime($kelas["tgl_selesai"])))?> <?= angka_arab(date("Y", strtotime($kelas["tgl_selesai"])))?>، وَ قَدْ نَجَحَ /تْ فِي الإمتِحَانِ النِّهَائِ </p><span style="font-size:1px">ن</span></div>
-        <div class="p3">
-            <p style="text-align: center; margin: 0px">بِتَقْدِيْرِيْ</p><span style="font-size: 1px">ه</span>
-        </div>
-        <div class="nilai">
-            <span style="font-size: 40px"><strong><?= $nilai?></strong></span><span style="font-size: 1px">ه</span>
-        </div>
+        <?php if($kelas['program_arab'] == "Arabic Mastery") :?>
+            <div class="p1"><p style="text-align: center; margin: 0px">مِنَ التَّارِيْخ <?= angka_arab(date("j", strtotime($kelas["tgl_mulai"]))) ?> مِنْ <span style="font-size: 20px;">"<?= $kelas['program_arab']?>"</span> قَدْ دَرَسَ /دَرَسَتْ اللغة العربيّة فِي الْفَصْل</p><span style="font-size: 1px">ه</span></div>
+        <?php elseif($kelas['program'] == "Tahfidz Putra" || $kelas['program'] == "Tahfidz Putri") :?>
+            <div class="p1"><p style="text-align: center; margin: 0px">قَدْ شارك /شاركت برنامج لتحفيظ القرآن "عبر الانترنيت" مِنَ التَّارِيْخ <?= angka_arab(date("j", strtotime($kelas["tgl_mulai"]))) ?> مِنْ </p><span style="font-size: 1px">ه</span></div>
+        <?php else :?>
+            <div class="p1"><p style="text-align: center; margin: 0px">قَدْ دَرَسَ /دَرَسَتْ اللغة العربيّة فِي الْفَصْل "<?= $kelas['program_arab']?>" مِنَ التَّارِيْخ <?= angka_arab(date("j", strtotime($kelas["tgl_mulai"]))) ?> مِنْ </p><span style="font-size: 1px">ه</span></div>
+        <?php endif;?>
+        <?php if($kelas['program'] == "Tahfidz Putra" || $kelas['program'] == "Tahfidz Putri") :?>
+            <div class="p2"><p style="text-align: center; margin: 0px"><?= bulan_arab(date("m", strtotime($kelas["tgl_mulai"]))) ?> إِلَى <?= tgl_arab(date("j-m", strtotime($kelas["tgl_selesai"])))?> <?= angka_arab(date("Y", strtotime($kelas["tgl_selesai"])))?>، و قد حصل /تْ على </p><span style="font-size:1px">ن</span></div>
+        <?php else :?>
+            <div class="p2"><p style="text-align: center; margin: 0px"><?= bulan_arab(date("m", strtotime($kelas["tgl_mulai"]))) ?> إِلَى <?= tgl_arab(date("j-m", strtotime($kelas["tgl_selesai"])))?> <?= angka_arab(date("Y", strtotime($kelas["tgl_selesai"])))?>، وَ قَدْ نَجَحَ /تْ فِي الإمتِحَانِ النِّهَائِ </p><span style="font-size:1px">ن</span></div>
+        <?php endif;?>
+        
+        <?php if($kelas['program'] == "Tahfidz Putra" || $kelas['program'] == "Tahfidz Putri") :?>
+            <div class="p3">
+                <p style="text-align: center; margin: 0px">: حفظه /ها في الجزء</p><span style="font-size: 1px">ه</span>
+            </div>
+        <?php else :?>
+            <div class="p3">
+                <p style="text-align: center; margin: 0px">بِتَقْدِيْرِيْ</p><span style="font-size: 1px">ه</span>
+            </div>
+        <?php endif;?>
+        <?php if($kelas['program'] == "Tahfidz Putra" || $kelas['program'] == "Tahfidz Putri") :?>
+            <?php $spasi = substr_count($nilai, ' ');?>
+            <?php if($spasi == 0):?>
+            <div class="nilai">
+                <span style="font-size: 40px"><strong><?= $nilai?></strong></span><span style="font-size: 1px">ه</span>
+            </div>
+            <?php elseif($spasi == 1):?>
+                <div class="nilai2">
+                    <span style="font-size: 40px"><strong><?= $nilai?></strong></span><span style="font-size: 1px">ه</span>
+                </div>
+            <?php elseif($spasi == 2):?>
+                <div class="nilai3">
+                    <span style="font-size: 40px"><strong><?= $nilai?></strong></span><span style="font-size: 1px">ه</span>
+                </div>
+            <?php endif;?>
+        <?php else :?>
+            <div class="nilai">
+                <span style="font-size: 40px"><strong><?= $nilai?></strong></span><span style="font-size: 1px">ه</span>
+            </div>
+        <?php endif;?>
 
     </body>
 </html>
