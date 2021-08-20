@@ -146,8 +146,18 @@
             height: 100%;
         } */
 
+        .nilai_indeks{
+			/* background-color: red; */
+            position: absolute;
+			right: 370;
+			bottom: 25px;
+            font-family: arial;
+            /* direction: 'rtl'; */
+        }
+
         .nilai{
-			position: absolute;
+			/* background-color: red; */
+            position: absolute;
 			right: 370;
 			top: 670px;
             font-family: arial;
@@ -155,7 +165,8 @@
         }
 
         .nilai2{
-			position: absolute;
+			/* background-color: red; */
+            position: absolute;
 			right: 300;
 			top: 670px;
             font-family: arial;
@@ -163,7 +174,8 @@
         }
 
         .nilai3{
-			position: absolute;
+			/* background-color: red; */
+            position: absolute;
 			right: 260;
 			top: 670px;
             font-family: arial;
@@ -218,8 +230,20 @@
         <?php endif;?>
         
         <?php if($kelas['program'] == "Tahfidz Putra" || $kelas['program'] == "Tahfidz Putri") :?>
+            <?php 
+                $data_indeks = substr_count($nilai, '|');
+                if($data_indeks != 0) {
+                    $data_nilai = explode("|", $nilai);
+                    $spasi = substr_count($data_nilai[0], ' ');
+                    $nilai = $data_nilai[0];
+                    $indeks = $data_nilai[1];
+                } else {
+                    $spasi = substr_count($nilai[0], ' ');
+                    $indeks = "";
+                }
+            ?>
             <div class="p3">
-                <p style="text-align: center; margin: 0px">: حفظه /ها في الجزء</p><span style="font-size: 1px">ه</span>
+                <p style="text-align: center; margin: 0px">حفظه /ها في الجزء : <?= $nilai ?></p><span style="font-size: 1px">ه</span>
             </div>
         <?php else :?>
             <div class="p3">
@@ -227,20 +251,9 @@
             </div>
         <?php endif;?>
         <?php if($kelas['program'] == "Tahfidz Putra" || $kelas['program'] == "Tahfidz Putri") :?>
-            <?php $spasi = substr_count($nilai, ' ');?>
-            <?php if($spasi == 0):?>
             <div class="nilai">
-                <span style="font-size: 40px"><strong><?= $nilai?></strong></span><span style="font-size: 1px">ه</span>
+                <span style="font-size: 40px"><strong><?= $indeks?></strong></span><span style="font-size: 1px">ه</span>
             </div>
-            <?php elseif($spasi == 1):?>
-                <div class="nilai2">
-                    <span style="font-size: 40px"><strong><?= $nilai?></strong></span><span style="font-size: 1px">ه</span>
-                </div>
-            <?php elseif($spasi == 2):?>
-                <div class="nilai3">
-                    <span style="font-size: 40px"><strong><?= $nilai?></strong></span><span style="font-size: 1px">ه</span>
-                </div>
-            <?php endif;?>
         <?php else :?>
             <div class="nilai">
                 <span style="font-size: 40px"><strong><?= $nilai?></strong></span><span style="font-size: 1px">ه</span>

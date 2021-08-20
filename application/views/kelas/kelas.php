@@ -589,37 +589,64 @@
                                 for (let i = 0; i < 30; i++) {
                                     dataNilai[i] = ""
                                 }
+                                
+                                data_nilai = element.nilai.indexOf("|");
+                                console.log(element.nilai)
+                                console.log(data_nilai)
+                                if(data_nilai != -1 && element.nilai != ""){
+                                    data_nilai = element.nilai.split("|");
+                                    juz = data_nilai[0];
+                                    indeks = data_nilai[1];
+                                } else if(data_nilai == -1 && element.nilai == "") {
+                                    juz = "";
+                                    indeks = "";
+                                } else if(data_nilai == -1 && element.nilai != ""){
+                                    juz = element.nilai
+                                    indeks = "";
+                                }
 
-                                if(element.nilai == "الأول"){ dataNilai[0] = "selected"}else{dataNilai[0] = ""}
-                                if(element.nilai == "الثاني"){ dataNilai[1] = "selected"}else{dataNilai[1] = ""}
-                                if(element.nilai == "الثالث"){ dataNilai[2] = "selected"}else{dataNilai[2] = ""}
-                                if(element.nilai == "الرابع"){ dataNilai[3] = "selected"}else{dataNilai[3] = ""}
-                                if(element.nilai == "الخامس"){ dataNilai[4] = "selected"}else{dataNilai[4] = ""}
-                                if(element.nilai == "السادس"){ dataNilai[5] = "selected"}else{dataNilai[5] = ""}
-                                if(element.nilai == "السابع"){ dataNilai[6] = "selected"}else{dataNilai[6] = ""}
-                                if(element.nilai == "الثامن"){ dataNilai[7] = "selected"}else{dataNilai[7] = ""}
-                                if(element.nilai == "التاسع"){ dataNilai[8] = "selected"}else{dataNilai[8] = ""}
-                                if(element.nilai == "العاشر"){ dataNilai[9] = "selected"}else{dataNilai[9] = ""}
-                                if(element.nilai == "الحادي عشر"){ dataNilai[10] = "selected"}else{dataNilai[10] = ""}
-                                if(element.nilai == "الثاني عشر"){ dataNilai[11] = "selected"}else{dataNilai[11] = ""}
-                                if(element.nilai == "الثالث عشر"){ dataNilai[12] = "selected"}else{dataNilai[12] = ""}
-                                if(element.nilai == "الرابع عشر"){ dataNilai[13] = "selected"}else{dataNilai[13] = ""}
-                                if(element.nilai == "الخامس عشر"){ dataNilai[14] = "selected"}else{dataNilai[14] = ""}
-                                if(element.nilai == "السادس عشر"){ dataNilai[15] = "selected"}else{dataNilai[15] = ""}
-                                if(element.nilai == "السابع عشر"){ dataNilai[16] = "selected"}else{dataNilai[16] = ""}
-                                if(element.nilai == "الثامن عشر"){ dataNilai[17] = "selected"}else{dataNilai[17] = ""}
-                                if(element.nilai == "التاسع عشر"){ dataNilai[18] = "selected"}else{dataNilai[18] = ""}
-                                if(element.nilai == "العشرون"){ dataNilai[19] = "selected"}else{dataNilai[19] = ""}
-                                if(element.nilai == "الحادي و العشرون"){ dataNilai[20] = "selected"}else{dataNilai[20] = ""}
-                                if(element.nilai == "الثاني و العشرون"){ dataNilai[21] = "selected"}else{dataNilai[21] = ""}
-                                if(element.nilai == "الثالث و العشرون"){ dataNilai[22] = "selected"}else{dataNilai[22] = ""}
-                                if(element.nilai == "الرابع و العشرون"){ dataNilai[23] = "selected"}else{dataNilai[23] = ""}
-                                if(element.nilai == "الخامس و العشرون"){ dataNilai[24] = "selected"}else{dataNilai[24] = ""}
-                                if(element.nilai == "السادس و العشرون"){ dataNilai[25] = "selected"}else{dataNilai[25] = ""}
-                                if(element.nilai == "السابع و العشرون"){ dataNilai[26] = "selected"}else{dataNilai[26] = ""}
-                                if(element.nilai == "الثامن و العشرون"){ dataNilai[27] = "selected"}else{dataNilai[27] = ""}
-                                if(element.nilai == "التاسع و العشرون"){ dataNilai[28] = "selected"}else{dataNilai[28] = ""}
-                                if(element.nilai == "الثلاثون"){ dataNilai[29] = "selected"}else{dataNilai[29] = ""}
+                                console.log(element.nama, juz, indeks);
+
+                                mumtaz = "";
+                                jj = "";
+                                jayyid = "";
+                                maqbul = "";
+
+                                if(indeks == "ممتاز"){ mumtaz = "selected" }else {mumtaz = ""}
+                                if(indeks == "جيد جدا"){ jj = "selected" }else {jj = ""}
+                                if(indeks == "جيد"){ jayyid = "selected" }else {jayyid = ""}
+                                if(indeks == "مقبول"){ maqbul = "selected" }else {maqbul = ""}
+
+                                if(juz == "الأول"){ dataNilai[0] = "selected"}else{dataNilai[0] = ""}
+                                if(juz == "الثاني"){ dataNilai[1] = "selected"}else{dataNilai[1] = ""}
+                                if(juz == "الثالث"){ dataNilai[2] = "selected"}else{dataNilai[2] = ""}
+                                if(juz == "الرابع"){ dataNilai[3] = "selected"}else{dataNilai[3] = ""}
+                                if(juz == "الخامس"){ dataNilai[4] = "selected"}else{dataNilai[4] = ""}
+                                if(juz == "السادس"){ dataNilai[5] = "selected"}else{dataNilai[5] = ""}
+                                if(juz == "السابع"){ dataNilai[6] = "selected"}else{dataNilai[6] = ""}
+                                if(juz == "الثامن"){ dataNilai[7] = "selected"}else{dataNilai[7] = ""}
+                                if(juz == "التاسع"){ dataNilai[8] = "selected"}else{dataNilai[8] = ""}
+                                if(juz == "العاشر"){ dataNilai[9] = "selected"}else{dataNilai[9] = ""}
+                                if(juz == "الحادي عشر"){ dataNilai[10] = "selected"}else{dataNilai[10] = ""}
+                                if(juz == "الثاني عشر"){ dataNilai[11] = "selected"}else{dataNilai[11] = ""}
+                                if(juz == "الثالث عشر"){ dataNilai[12] = "selected"}else{dataNilai[12] = ""}
+                                if(juz == "الرابع عشر"){ dataNilai[13] = "selected"}else{dataNilai[13] = ""}
+                                if(juz == "الخامس عشر"){ dataNilai[14] = "selected"}else{dataNilai[14] = ""}
+                                if(juz == "السادس عشر"){ dataNilai[15] = "selected"}else{dataNilai[15] = ""}
+                                if(juz == "السابع عشر"){ dataNilai[16] = "selected"}else{dataNilai[16] = ""}
+                                if(juz == "الثامن عشر"){ dataNilai[17] = "selected"}else{dataNilai[17] = ""}
+                                if(juz == "التاسع عشر"){ dataNilai[18] = "selected"}else{dataNilai[18] = ""}
+                                if(juz == "العشرون"){ dataNilai[19] = "selected"}else{dataNilai[19] = ""}
+                                if(juz == "الحادي و العشرون"){ dataNilai[20] = "selected"}else{dataNilai[20] = ""}
+                                if(juz == "الثاني و العشرون"){ dataNilai[21] = "selected"}else{dataNilai[21] = ""}
+                                if(juz == "الثالث و العشرون"){ dataNilai[22] = "selected"}else{dataNilai[22] = ""}
+                                if(juz == "الرابع و العشرون"){ dataNilai[23] = "selected"}else{dataNilai[23] = ""}
+                                if(juz == "الخامس و العشرون"){ dataNilai[24] = "selected"}else{dataNilai[24] = ""}
+                                if(juz == "السادس و العشرون"){ dataNilai[25] = "selected"}else{dataNilai[25] = ""}
+                                if(juz == "السابع و العشرون"){ dataNilai[26] = "selected"}else{dataNilai[26] = ""}
+                                if(juz == "الثامن و العشرون"){ dataNilai[27] = "selected"}else{dataNilai[27] = ""}
+                                if(juz == "التاسع و العشرون"){ dataNilai[28] = "selected"}else{dataNilai[28] = ""}
+                                if(juz == "الثلاثون"){ dataNilai[29] = "selected"}else{dataNilai[29] = ""}
                                 html += `<li class="list-group-item d-flex justify-content-between">
                                             <span>
                                                 `+btnDelete+`
@@ -657,6 +684,14 @@
                                                         <option `+dataNilai[27]+` value="الثامن و العشرون">الثامن و العشرون</option>
                                                         <option `+dataNilai[28]+` value="التاسع و العشرون">التاسع و العشرون</option>
                                                         <option `+dataNilai[29]+` value="الثلاثون">الثلاثون</option>
+                                                    </select>
+
+                                                    <select name="indeks" id="indeks`+element.id+`" class="form-control form-control-sm mr-1">
+                                                        <option value="">Indeks</option>
+                                                        <option `+mumtaz+` value="ممتاز">ممتاز</option>
+                                                        <option `+jj+` value="جيد جدا">جيد جدا</option>
+                                                        <option `+jayyid+` value="جيد">جيد</option>
+                                                        <option `+maqbul+` value="مقبول">مقبول</option>
                                                     </select>
                                                     <a href="javascript:void(0)" class="btn btn-sm btn-primary" id="btnSaveNilai" data-id="`+element.id+`"><i class="fa fa-save"></i></a>
                                                 </div>
@@ -758,6 +793,11 @@
     $("#list-peserta").on("click", "#btnSaveNilai", function(){
         let id = $(this).data("id");
         let nilai = $("#nilai"+id).val();
+        let indeks = $("#indeks"+id).val();
+
+        if(indeks != ""){
+            nilai += "|" + indeks;
+        }
 
         $.ajax({
             url: "<?= base_url()?>kelas/add_nilai_sertifikat",
